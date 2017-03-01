@@ -29,11 +29,11 @@ public final class Daytabase {
     
     public var db: OpaquePointer?
     
-    init(path: String,
-         serializer: @escaping DaytabaseSerializer = defaultSerializer,
-         deserializer: @escaping DaytabaseDeserializer = defaultDeserializer,
-         metadataSerializer: @escaping DaytabaseSerializer = defaultSerializer,
-         metadataDeserializer: @escaping DaytabaseDeserializer = defaultDeserializer) {
+    public init(path: String,
+                serializer: @escaping DaytabaseSerializer = defaultSerializer,
+                deserializer: @escaping DaytabaseDeserializer = defaultDeserializer,
+                metadataSerializer: @escaping DaytabaseSerializer = defaultSerializer,
+                metadataDeserializer: @escaping DaytabaseDeserializer = defaultDeserializer) {
         self.databasePath = path
         self.objectSerializer = serializer
         self.objectDeserializer = deserializer
@@ -43,7 +43,7 @@ public final class Daytabase {
         let isNewDatabase = FileManager.default.fileExists(atPath: path)
         
         let openConfigCreate = { () -> Bool in 
-            let result = !(self.openDatabase() && self.configureDatabase(isNewDatabase: isNewDatabase) && self.createTables())
+            let result = self.openDatabase() && self.configureDatabase(isNewDatabase: isNewDatabase) && self.createTables()
             if let db = self.db, !result {
                 sqlite3_close(db)
                 self.db = nil
@@ -53,7 +53,6 @@ public final class Daytabase {
         let result = openConfigCreate()
         if !result {
             print("Error opening database")
-            return nil
         }
     }
     
@@ -75,7 +74,7 @@ public final class Daytabase {
     
     // TODO
     func configureDatabase(isNewDatabase: Bool) -> Bool {
-        return false
+        return true
     }
     
     func createTables() -> Bool {
@@ -111,5 +110,9 @@ public final class Daytabase {
         }
         return true
     }
-    
+
+    func newConnection() -> Connection {
+        return Connection(database: self)
+    }
+
 }
