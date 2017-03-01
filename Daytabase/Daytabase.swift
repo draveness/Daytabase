@@ -20,6 +20,10 @@ let defaultDeserializer: DaytabaseDeserializer = { (collection: String, key: Str
     return NSKeyedUnarchiver.unarchiveObject(with: data)
 }
 
+func daytabase_errmsg(_ db: OpaquePointer?) -> String {
+    return String(cString: sqlite3_errmsg(db))
+}
+
 public final class Daytabase {
     public let databasePath: String
     public let objectSerializer: DaytabaseSerializer
@@ -63,7 +67,7 @@ public final class Daytabase {
         if status == SQLITE_OK { return true }
     
         if let _ = db {
-            print("Error opening database: \(status) \(sqlite3_errmsg(db))")
+            print("Error opening database: \(status) \(daytabase_errmsg(db))")
         } else {
             print("Error opening database: \(status)")
         }
@@ -86,7 +90,7 @@ public final class Daytabase {
             "  PRIMARY KEY (\"extension\", \"key\")" +
             " );"
         if sqlite3_exec(db, createYapTableStatement, nil, nil, nil) != SQLITE_OK {
-            print("Failed creating 'yap2' table: \(sqlite3_errmsg(db))")
+            print("Failed creating 'yap2' table: \(daytabase_errmsg(db))")
             return false
         }
         
@@ -99,19 +103,19 @@ public final class Daytabase {
             "  \"metadata\" BLOB" +
             " );";
         if sqlite3_exec(db, createDatabaseTableStatement, nil, nil, nil) != SQLITE_OK {
-            print("Failed creating 'database2' table: \(sqlite3_errmsg(db))")
+            print("Failed creating 'database2' table: \(daytabase_errmsg(db))")
             return false
         }
       
         let createIndexStatement = "CREATE UNIQUE INDEX IF NOT EXISTS \"true_primary_key\" ON \"database2\" ( \"collection\", \"key\" );"
         if sqlite3_exec(db, createIndexStatement, nil, nil, nil) != SQLITE_OK {
-            print("Failed creating index on 'database2' table: \(sqlite3_errmsg(db))")
+            print("Failed creating index on 'database2' table: \(daytabase_errmsg(db))")
             return false
         }
         return true
     }
 
-    func newConnection() -> Connection {
+    public func newConnection() -> Connection {
         return Connection(database: self)
     }
 

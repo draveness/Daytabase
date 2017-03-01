@@ -21,6 +21,7 @@
 		7270993B1E66F03B00BE40E3 /* Daytabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7206F7921E6694E100131CB0 /* Daytabase.framework */; };
 		7270993C1E66F03B00BE40E3 /* Daytabase.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7206F7921E6694E100131CB0 /* Daytabase.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		727099411E66F90D00BE40E3 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099401E66F90D00BE40E3 /* Transaction.swift */; };
+		727099431E6710FD00BE40E3 /* Blob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099421E6710FC00BE40E3 /* Blob.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 		727099351E66EFBC00BE40E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		727099391E66EFD000BE40E3 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		727099401E66F90D00BE40E3 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		727099421E6710FC00BE40E3 /* Blob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blob.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +136,7 @@
 				7206F7B81E66989600131CB0 /* Daytabase.swift */,
 				7206F7C51E669CDD00131CB0 /* Connection.swift */,
 				727099401E66F90D00BE40E3 /* Transaction.swift */,
+				727099421E6710FC00BE40E3 /* Blob.swift */,
 				7206F7961E6694E100131CB0 /* Info.plist */,
 			);
 			path = Daytabase;
@@ -347,6 +350,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				727099431E6710FD00BE40E3 /* Blob.swift in Sources */,
 				7206F7B91E66989600131CB0 /* Daytabase.swift in Sources */,
 				7206F7C61E669CDD00131CB0 /* Connection.swift in Sources */,
 				727099411E66F90D00BE40E3 /* Transaction.swift in Sources */,

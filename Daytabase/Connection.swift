@@ -26,7 +26,7 @@ public final class Connection {
 
         if status != SQLITE_OK {
             if let _ = db {
-                print("Error opening database: \(status) \(sqlite3_errmsg(db))")
+                print("Error opening database: \(status) \(daytabase_errmsg(db))")
             } else {
                 print("Error opening database: \(status)")
             }
@@ -42,9 +42,21 @@ public final class Connection {
         }
     }
 
+    public func readWrite(block: (ReadWriteTransaction) -> Void) {
+        connectionQueue.sync {
+            let transation = self.newReadWriteTransaction()
+            self.preReadWrite(transaction: transation)
+            block(transation)
+            self.postReadWrite(transaction: transation)
+        }
+    }
 
     func newReadTransaction() -> ReadTransaction {
         return ReadTransaction(connection: self)
+    }
+
+    func newReadWriteTransaction() -> ReadWriteTransaction {
+        return ReadWriteTransaction(connection: self, readWrite: true)
     }
 
     func preRead(transaction: ReadTransaction) {
@@ -52,6 +64,14 @@ public final class Connection {
     }
 
     func postRead(transaction: ReadTransaction) {
+        transaction.commit()
+    }
 
+    func preReadWrite(transaction: ReadWriteTransaction) {
+        transaction.begin()
+    }
+
+    func postReadWrite(transaction: ReadWriteTransaction) {
+        transaction.commit()
     }
 }

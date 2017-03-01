@@ -22,10 +22,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window!.rootViewController = ViewController()
         self.window!.makeKeyAndVisible()
 
-        let connection = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
-        let path = connection.appending("/database.sqlite");
-
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!.appending("/database.sqlite")
         let db = Daytabase(path: path)
+        let connection = db.newConnection()
+        connection.readWrite { transaction in
+//            transaction.setObject("draveness", key: "draven")
+            let value = transaction.objectFor(key: "draven")
+            print("\(value)")
+        }
         return true
     }
 
