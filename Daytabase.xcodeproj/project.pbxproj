@@ -8,8 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		7206F79C1E6694E100131CB0 /* Daytabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7206F7921E6694E100131CB0 /* Daytabase.framework */; };
-		7206F7A11E6694E100131CB0 /* DaytabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7206F7A01E6694E100131CB0 /* DaytabaseTests.swift */; };
 		7206F7A31E6694E100131CB0 /* Daytabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 7206F7951E6694E100131CB0 /* Daytabase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7206F7AE1E6694ED00131CB0 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7206F7AD1E6694ED00131CB0 /* libsqlite3.tbd */; };
+		7206F7B11E6695BB00131CB0 /* SQLite-Bridging.h in Headers */ = {isa = PBXBuildFile; fileRef = 7206F7B01E66951D00131CB0 /* SQLite-Bridging.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7206F7B71E66988B00131CB0 /* DaytabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7206F7A01E6694E100131CB0 /* DaytabaseTests.swift */; };
+		7206F7B91E66989600131CB0 /* Daytabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7206F7B81E66989600131CB0 /* Daytabase.swift */; };
+		7206F7C61E669CDD00131CB0 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7206F7C51E669CDD00131CB0 /* Connection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +33,12 @@
 		7206F79B1E6694E100131CB0 /* DaytabaseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DaytabaseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7206F7A01E6694E100131CB0 /* DaytabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaytabaseTests.swift; sourceTree = "<group>"; };
 		7206F7A21E6694E100131CB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7206F7AD1E6694ED00131CB0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		7206F7B01E66951D00131CB0 /* SQLite-Bridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SQLite-Bridging.h"; sourceTree = "<group>"; };
+		7206F7B81E66989600131CB0 /* Daytabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Daytabase.swift; sourceTree = "<group>"; };
+		7206F7C31E669C9500131CB0 /* module.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; name = module.map; path = Modules/iphoneos/module.map; sourceTree = "<group>"; };
+		7206F7C41E669CA600131CB0 /* module.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; name = module.map; path = Modules/iphonesimulator/module.map; sourceTree = "<group>"; };
+		7206F7C51E669CDD00131CB0 /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7206F7AE1E6694ED00131CB0 /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,9 +64,11 @@
 		7206F7881E6694E100131CB0 = {
 			isa = PBXGroup;
 			children = (
+				7206F7B21E66964200131CB0 /* Modules */,
 				7206F7941E6694E100131CB0 /* Daytabase */,
 				7206F79F1E6694E100131CB0 /* DaytabaseTests */,
 				7206F7931E6694E100131CB0 /* Products */,
+				7206F7AC1E6694ED00131CB0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,7 +84,10 @@
 		7206F7941E6694E100131CB0 /* Daytabase */ = {
 			isa = PBXGroup;
 			children = (
+				7206F7AF1E6694FE00131CB0 /* Core */,
 				7206F7951E6694E100131CB0 /* Daytabase.h */,
+				7206F7B81E66989600131CB0 /* Daytabase.swift */,
+				7206F7C51E669CDD00131CB0 /* Connection.swift */,
 				7206F7961E6694E100131CB0 /* Info.plist */,
 			);
 			path = Daytabase;
@@ -86,6 +102,47 @@
 			path = DaytabaseTests;
 			sourceTree = "<group>";
 		};
+		7206F7AC1E6694ED00131CB0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7206F7AD1E6694ED00131CB0 /* libsqlite3.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7206F7AF1E6694FE00131CB0 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				7206F7B01E66951D00131CB0 /* SQLite-Bridging.h */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		7206F7B21E66964200131CB0 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				7206F7BC1E66990700131CB0 /* iphonesimulator */,
+				7206F7B41E6696EF00131CB0 /* iphoneos */,
+			);
+			name = Modules;
+			sourceTree = "<group>";
+		};
+		7206F7B41E6696EF00131CB0 /* iphoneos */ = {
+			isa = PBXGroup;
+			children = (
+				7206F7C31E669C9500131CB0 /* module.map */,
+			);
+			name = iphoneos;
+			sourceTree = "<group>";
+		};
+		7206F7BC1E66990700131CB0 /* iphonesimulator */ = {
+			isa = PBXGroup;
+			children = (
+				7206F7C41E669CA600131CB0 /* module.map */,
+			);
+			name = iphonesimulator;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -93,6 +150,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7206F7B11E6695BB00131CB0 /* SQLite-Bridging.h in Headers */,
 				7206F7A31E6694E100131CB0 /* Daytabase.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -148,6 +206,7 @@
 				TargetAttributes = {
 					7206F7911E6694E100131CB0 = {
 						CreatedOnToolsVersion = 8.2.1;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
 					7206F79A1E6694E100131CB0 = {
@@ -196,6 +255,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7206F7B91E66989600131CB0 /* Daytabase.swift in Sources */,
+				7206F7C61E669CDD00131CB0 /* Connection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,7 +264,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7206F7A11E6694E100131CB0 /* DaytabaseTests.swift in Sources */,
+				7206F7B71E66988B00131CB0 /* DaytabaseTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,6 +381,7 @@
 		7206F7A71E6694E100131CB0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -331,6 +393,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.draveness.Daytabase;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				"SWIFT_INCLUDE_PATHS[sdk=iphoneos*]" = "$(SRCROOT)/Modules/iphoneos";
+				"SWIFT_INCLUDE_PATHS[sdk=iphonesimulator*]" = "$(SRCROOT)/Modules/iphonesimulator";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -338,6 +403,7 @@
 		7206F7A81E6694E100131CB0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -356,6 +422,7 @@
 		7206F7AA1E6694E100131CB0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = DaytabaseTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.draveness.DaytabaseTests;
@@ -367,6 +434,7 @@
 		7206F7AB1E6694E100131CB0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = DaytabaseTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.draveness.DaytabaseTests;
