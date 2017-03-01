@@ -32,6 +32,16 @@ public final class Daytabase {
     public let metadataDeserializer: DaytabaseDeserializer
     
     public var db: OpaquePointer?
+
+    public convenience init() {
+        let file = "database"
+        self.init(file: file)
+    }
+
+    public convenience init(file: String) {
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!.appending("/\(file).sqlite")
+        self.init(path: path)
+    }
     
     public init(path: String,
                 serializer: @escaping DaytabaseSerializer = defaultSerializer,

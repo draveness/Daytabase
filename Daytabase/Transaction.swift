@@ -94,7 +94,11 @@ public class ReadTransaction {
 
     let SQLITE_STATIC = unsafeBitCast(0, to: sqlite3_destructor_type.self)
 
-    public func objectFor(key: String, collection: String = "") -> Any? {
+    public func valueFor(key: String, inCollection collection: String = "") -> Any? {
+        return objectFor(key: key, inCollection: collection)
+    }
+
+    public func objectFor(key: String, inCollection collection: String = "") -> Any? {
         guard let statement = getDataForKeyStatement else { return nil }
 
         defer {
@@ -122,10 +126,8 @@ public class ReadTransaction {
 }
 
 public final class ReadWriteTransaction: ReadTransaction {
-    public func setObject(_ object: Any, key: String, inCollection collection: String = "") {
+    func insert(object: Any, key: String, inCollection collection: String = "") {
         guard let statement = insertForRowidStatement else { return }
-
-//        var set = true
 
         defer {
             sqlite3_clear_bindings(statement)
@@ -148,11 +150,15 @@ public final class ReadWriteTransaction: ReadTransaction {
             let _ = sqlite3_last_insert_rowid(db);
         } else {
             print("Error executing 'insertForRowidStatement': \(status) \(daytabase_errmsg(db)) key(\(key))")
-//            set = false
         }
+    }
 
-//        if !set {
-//            return
-//        }
+    public func set(value: Any, key: String, inCollection collection: String = "") {
+        set(object: value, key: key, inCollection: collection)
+    }
+
+    public func set(object: Any, key: String, inCollection collection: String = "") {
+        // update
+        insert(object: object, key: key, inCollection: collection)
     }
 }

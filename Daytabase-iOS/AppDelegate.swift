@@ -14,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    let connection = Daytabase().newConnection()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         self.window = UIWindow(frame: UIScreen.main.bounds)
@@ -22,11 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window!.rootViewController = ViewController()
         self.window!.makeKeyAndVisible()
 
-        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!.appending("/database.sqlite")
-        let db = Daytabase(path: path)
-        let connection = db.newConnection()
+
         connection.readWrite { transaction in
-//            transaction.setObject("draveness", key: "draven")
+            transaction.set(object: "draveness", key: "draven")
             let value = transaction.objectFor(key: "draven")
             print("\(value)")
         }
