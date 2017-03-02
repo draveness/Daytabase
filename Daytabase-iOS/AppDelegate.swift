@@ -23,10 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window!.rootViewController = ViewController()
         self.window!.makeKeyAndVisible()
 
-
         connection.readWrite { transaction in
-            transaction.set(object: "draveness", key: "draven")
-            let value = transaction.objectFor(key: "draven")
+            transaction.set(value: "update", forKey: "draven")
+            let value = transaction.value(forKey: "draven")
             print("\(value)")
         }
         return true
