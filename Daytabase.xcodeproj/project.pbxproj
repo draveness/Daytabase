@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E37D78A8570709160B822B5 /* Pods_Daytabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D85E5D7A07F96C2BF448EA3 /* Pods_Daytabase.framework */; };
+		2C7A591EF0E05B02AF350FE1 /* Pods_Daytabase_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0600690A3D4FB339A51FBFF6 /* Pods_Daytabase_iOS.framework */; };
+		5E4442DFF0BA1E874E6579EB /* Pods_DaytabaseTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FE7B93E6E8659FF2614BA0F /* Pods_DaytabaseTests.framework */; };
 		7206F79C1E6694E100131CB0 /* Daytabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7206F7921E6694E100131CB0 /* Daytabase.framework */; };
 		7206F7A31E6694E100131CB0 /* Daytabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 7206F7951E6694E100131CB0 /* Daytabase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7206F7AE1E6694ED00131CB0 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7206F7AD1E6694ED00131CB0 /* libsqlite3.tbd */; };
@@ -26,6 +29,7 @@
 		7270994D1E68401100BE40E3 /* Murmurhash.h in Headers */ = {isa = PBXBuildFile; fileRef = 727099481E683F4700BE40E3 /* Murmurhash.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7270994E1E68406400BE40E3 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7270994B1E683FDB00BE40E3 /* Utility.swift */; };
 		727099521E684E3500BE40E3 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099511E684E3500BE40E3 /* Cache.swift */; };
+		727099541E685F1300BE40E3 /* XCGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 727099531E685F1300BE40E3 /* XCGLogger.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +64,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0600690A3D4FB339A51FBFF6 /* Pods_Daytabase_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Daytabase_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		280883DE8F83C4CF0B55B9EE /* Pods-DaytabaseTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DaytabaseTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DaytabaseTests/Pods-DaytabaseTests.release.xcconfig"; sourceTree = "<group>"; };
+		38B676DCFDFB298FC55892B0 /* Pods-DaytabaseTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DaytabaseTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DaytabaseTests/Pods-DaytabaseTests.debug.xcconfig"; sourceTree = "<group>"; };
+		397C6AA6F806205CD703E15A /* Pods-Daytabase.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daytabase.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Daytabase/Pods-Daytabase.debug.xcconfig"; sourceTree = "<group>"; };
+		4D85E5D7A07F96C2BF448EA3 /* Pods_Daytabase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Daytabase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		608DC9AB248247EB9833C6B6 /* Pods-Daytabase.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daytabase.release.xcconfig"; path = "Pods/Target Support Files/Pods-Daytabase/Pods-Daytabase.release.xcconfig"; sourceTree = "<group>"; };
+		689B084FCEE788755D665ACE /* Pods-Daytabase-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daytabase-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Daytabase-iOS/Pods-Daytabase-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		7206F7921E6694E100131CB0 /* Daytabase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Daytabase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7206F7951E6694E100131CB0 /* Daytabase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Daytabase.h; sourceTree = "<group>"; };
 		7206F7961E6694E100131CB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -84,6 +95,9 @@
 		727099481E683F4700BE40E3 /* Murmurhash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Murmurhash.h; sourceTree = "<group>"; };
 		7270994B1E683FDB00BE40E3 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		727099511E684E3500BE40E3 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		727099531E685F1300BE40E3 /* XCGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCGLogger.framework; path = "../../Library/Developer/Xcode/DerivedData/Daytabase-gaskcvqebxtercfdiosmspbekbfj/Build/Products/Debug-iphoneos/XCGLogger/XCGLogger.framework"; sourceTree = "<group>"; };
+		897A8E9F07EA15BE817F81BB /* Pods-Daytabase-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daytabase-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Daytabase-iOS/Pods-Daytabase-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		9FE7B93E6E8659FF2614BA0F /* Pods_DaytabaseTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DaytabaseTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,7 +105,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				727099541E685F1300BE40E3 /* XCGLogger.framework in Frameworks */,
 				7206F7AE1E6694ED00131CB0 /* libsqlite3.tbd in Frameworks */,
+				1E37D78A8570709160B822B5 /* Pods_Daytabase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +116,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7206F79C1E6694E100131CB0 /* Daytabase.framework in Frameworks */,
+				5E4442DFF0BA1E874E6579EB /* Pods_DaytabaseTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +125,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7270993B1E66F03B00BE40E3 /* Daytabase.framework in Frameworks */,
+				2C7A591EF0E05B02AF350FE1 /* Pods_Daytabase_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,6 +141,7 @@
 				7270992D1E66EFBC00BE40E3 /* Daytabase-iOS */,
 				7206F7931E6694E100131CB0 /* Products */,
 				7206F7AC1E6694ED00131CB0 /* Frameworks */,
+				B41240486F6F253308412A0C /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -164,7 +183,11 @@
 		7206F7AC1E6694ED00131CB0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				727099531E685F1300BE40E3 /* XCGLogger.framework */,
 				7206F7AD1E6694ED00131CB0 /* libsqlite3.tbd */,
+				4D85E5D7A07F96C2BF448EA3 /* Pods_Daytabase.framework */,
+				0600690A3D4FB339A51FBFF6 /* Pods_Daytabase_iOS.framework */,
+				9FE7B93E6E8659FF2614BA0F /* Pods_DaytabaseTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -224,6 +247,19 @@
 			name = Utilities;
 			sourceTree = "<group>";
 		};
+		B41240486F6F253308412A0C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				397C6AA6F806205CD703E15A /* Pods-Daytabase.debug.xcconfig */,
+				608DC9AB248247EB9833C6B6 /* Pods-Daytabase.release.xcconfig */,
+				689B084FCEE788755D665ACE /* Pods-Daytabase-iOS.debug.xcconfig */,
+				897A8E9F07EA15BE817F81BB /* Pods-Daytabase-iOS.release.xcconfig */,
+				38B676DCFDFB298FC55892B0 /* Pods-DaytabaseTests.debug.xcconfig */,
+				280883DE8F83C4CF0B55B9EE /* Pods-DaytabaseTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -244,10 +280,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7206F7A61E6694E100131CB0 /* Build configuration list for PBXNativeTarget "Daytabase" */;
 			buildPhases = (
+				B3C926B1259D4957D9A44D57 /* [CP] Check Pods Manifest.lock */,
 				7206F78D1E6694E100131CB0 /* Sources */,
 				7206F78E1E6694E100131CB0 /* Frameworks */,
 				7206F78F1E6694E100131CB0 /* Headers */,
 				7206F7901E6694E100131CB0 /* Resources */,
+				7E23E9ECEF1AB37D97CF96D4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -262,9 +300,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7206F7A91E6694E100131CB0 /* Build configuration list for PBXNativeTarget "DaytabaseTests" */;
 			buildPhases = (
+				03FD4A22D231A5B3C8BF6698 /* [CP] Check Pods Manifest.lock */,
 				7206F7971E6694E100131CB0 /* Sources */,
 				7206F7981E6694E100131CB0 /* Frameworks */,
 				7206F7991E6694E100131CB0 /* Resources */,
+				B3C1B164DCE01819806C02A0 /* [CP] Embed Pods Frameworks */,
+				90BA41E23D728D4431626B51 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -280,10 +321,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 727099381E66EFBC00BE40E3 /* Build configuration list for PBXNativeTarget "Daytabase-iOS" */;
 			buildPhases = (
+				9799A5565460D8BC665CA716 /* [CP] Check Pods Manifest.lock */,
 				727099281E66EFBC00BE40E3 /* Sources */,
 				727099291E66EFBC00BE40E3 /* Frameworks */,
 				7270992A1E66EFBC00BE40E3 /* Resources */,
 				7270993F1E66F03B00BE40E3 /* Embed Frameworks */,
+				649F71A1077D5D3B72CAB62C /* [CP] Embed Pods Frameworks */,
+				8F2BB4BF7E3C759F16886E60 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -365,6 +409,129 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		03FD4A22D231A5B3C8BF6698 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		649F71A1077D5D3B72CAB62C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Daytabase-iOS/Pods-Daytabase-iOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7E23E9ECEF1AB37D97CF96D4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Daytabase/Pods-Daytabase-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8F2BB4BF7E3C759F16886E60 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Daytabase-iOS/Pods-Daytabase-iOS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		90BA41E23D728D4431626B51 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DaytabaseTests/Pods-DaytabaseTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9799A5565460D8BC665CA716 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B3C1B164DCE01819806C02A0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DaytabaseTests/Pods-DaytabaseTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B3C926B1259D4957D9A44D57 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7206F78D1E6694E100131CB0 /* Sources */ = {
@@ -526,6 +693,7 @@
 		};
 		7206F7A71E6694E100131CB0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 397C6AA6F806205CD703E15A /* Pods-Daytabase.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -548,6 +716,7 @@
 		};
 		7206F7A81E6694E100131CB0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 608DC9AB248247EB9833C6B6 /* Pods-Daytabase.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -567,6 +736,7 @@
 		};
 		7206F7AA1E6694E100131CB0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 38B676DCFDFB298FC55892B0 /* Pods-DaytabaseTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = DaytabaseTests/Info.plist;
@@ -579,6 +749,7 @@
 		};
 		7206F7AB1E6694E100131CB0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 280883DE8F83C4CF0B55B9EE /* Pods-DaytabaseTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = DaytabaseTests/Info.plist;
@@ -591,6 +762,7 @@
 		};
 		727099361E66EFBC00BE40E3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 689B084FCEE788755D665ACE /* Pods-Daytabase-iOS.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -604,6 +776,7 @@
 		};
 		727099371E66EFBC00BE40E3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 897A8E9F07EA15BE817F81BB /* Pods-Daytabase-iOS.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -652,6 +825,7 @@
 				727099371E66EFBC00BE40E3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

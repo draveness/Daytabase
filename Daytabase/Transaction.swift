@@ -25,7 +25,7 @@ public class ReadTransaction {
     func prepareSQL(_ sql: String, statement: UnsafeMutablePointer<OpaquePointer?>, name: String) {
         let status = sqlite3_prepare_v2(db, sql, sql.characters.count + 1, statement, nil)
         if status != SQLITE_OK {
-            print("Error creating \(name): \(status) \(daytabase_errmsg(db))")
+            Log.error("Error creating \(name): \(status) \(daytabase_errmsg(self.db))")
         }
     }
 
@@ -89,7 +89,7 @@ public class ReadTransaction {
         guard let statement = beginTransactionStatement else { return }
         let status = sqlite3_step(statement)
         if status != SQLITE_DONE {
-            print("Couldn't begin transaction: \(status) \(daytabase_errmsg(db))")
+            Log.error("Couldn't begin transaction: \(status) \(daytabase_errmsg(self.db))")
         }
         sqlite3_reset(statement)
     }
@@ -98,7 +98,7 @@ public class ReadTransaction {
         guard let statement = commitTransactionStatement else { return }
         let status = sqlite3_step(statement)
         if status != SQLITE_DONE {
-            print("Couldn't commit transaction: \(status) \(daytabase_errmsg(db))")
+            Log.error("Couldn't commit transaction: \(status) \(daytabase_errmsg(self.db))")
         }
         sqlite3_reset(statement)
     }
@@ -134,7 +134,7 @@ public class ReadTransaction {
             let data = Data(bytes: bytes, count: Int(count))
             return connection.database.objectDeserializer(collection, key, data)
         } else if status == SQLITE_ERROR {
-            print("Error executing 'getDataForKeyStatement': \(status) \(daytabase_errmsg(db)) key(\(key))")
+            Log.error("Error executing 'getDataForKeyStatement': \(status) \(daytabase_errmsg(self.db)) key(\(key))")
         }
         return nil
     }
@@ -155,7 +155,7 @@ public final class ReadWriteTransaction: ReadTransaction {
         if status == SQLITE_ROW {
             return sqlite3_column_int64(statement, column_idx_result)
         } else if status == SQLITE_ERROR {
-            print("Error executing 'getRowidForKeyStatement': \(status) \(daytabase_errmsg(db)) key(\(key))")
+            Log.error("Error executing 'getRowidForKeyStatement': \(status) \(daytabase_errmsg(self.db)) key(\(key))")
         }
         
         defer {
@@ -192,7 +192,7 @@ public final class ReadWriteTransaction: ReadTransaction {
         if status == SQLITE_DONE {
             let _ = sqlite3_last_insert_rowid(db);
         } else {
-            print("Error executing 'insertForRowidStatement': \(status) \(daytabase_errmsg(db)) key(\(key))")
+            Log.error("Error executing 'insertForRowidStatement': \(status) \(daytabase_errmsg(self.db)) key(\(key))")
         }
     }
     
@@ -227,7 +227,7 @@ public final class ReadWriteTransaction: ReadTransaction {
         if status == SQLITE_DONE {
             let _ = sqlite3_last_insert_rowid(db);
         } else {
-            print("Error executing 'updateAllForRowidStatement': \(status) \(daytabase_errmsg(db)) key(\(key))")
+            Log.error("Error executing 'updateAllForRowidStatement': \(status) \(daytabase_errmsg(self.db)) key(\(key))")
         }
     }
 
@@ -237,7 +237,6 @@ public final class ReadWriteTransaction: ReadTransaction {
     }
 
     public func set(object inObject: Any, forKey key: String, inCollection collection: String = "") {
-        // update
         if let _ = object(forkey: key, inCollection: collection) {
             update(object: inObject, forKey: key, inCollection: collection)
         } else {

@@ -9,15 +9,17 @@
 import Foundation
 
 
-public class CacheItem {
-    let key: String
+class CacheItem: CustomStringConvertible {
+    let key: NSCopying
     let value: Any
-    var prev: CacheItem?
-    var next: CacheItem?
 
-    init(key: String, value: String) {
+    init(key: NSCopying, value: Any) {
         self.key = key
         self.value = value
+    }
+
+    var description: String {
+        return "<CacheItem[\(self)] key(\(key))>"
     }
 }
 
@@ -32,8 +34,8 @@ public struct Cache {
     }
 
     var dictionary: [CollectionKey: CacheItem] = [:]
-//    var mostRecentCacheItem: CacheItem?
-//    var leastRecentCacheItem: CacheItem?
+    var mostRecentCacheItems: [CacheItem] = []
+    var leastRecentCacheItems: [CacheItem] = []
 
     public init(capacity: Int) {
         self.capacity = capacity
@@ -41,6 +43,10 @@ public struct Cache {
 
     public func object(forKey key: CollectionKey) -> Any? {
         guard let item = dictionary[key] else { return nil }
+//        if mostRecentCacheItems.count == 0 || mostRecentCacheItems.first! == item {
+//
+//        }
+
         return item.value
     }
 }
