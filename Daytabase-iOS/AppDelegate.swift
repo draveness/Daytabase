@@ -25,6 +25,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         connection.readWrite { transaction in
             transaction.set(value: "update", forKey: "draven")
+        }
+        connection.readWrite { transaction in
+            let value = transaction.value(forKey: "draven")
+            print("\(value)")
+        }
+        connection.readWrite { transaction in
+            transaction.set(value: "update2", forKey: "draven")
+        }
+        connection.readWrite { transaction in
             let value = transaction.value(forKey: "draven")
             print("\(value)")
         }

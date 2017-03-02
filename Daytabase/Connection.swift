@@ -11,6 +11,7 @@ import CSQLite3
 
 public final class Connection {
     public let database: Daytabase
+    var objectCache: Cache = Cache(capacity: 20)
 
     let connectionQueue: DispatchQueue = DispatchQueue(label: "DaytabaseConnectionQueue")
     let isOnConnectionQueueKey = DispatchSpecificKey<Bool>()
@@ -19,6 +20,7 @@ public final class Connection {
 
     init(database: Daytabase) {
         self.database = database
+
         connectionQueue.setSpecific(key: isOnConnectionQueueKey, value: false)
 
         let flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_PRIVATECACHE
@@ -49,6 +51,10 @@ public final class Connection {
             block(transation)
             self.postReadWrite(transaction: transation)
         }
+    }
+
+    func initiailzeObjectCache() {
+//        objectCache = Cache(capacity: 20)
     }
 
     func newReadTransaction() -> ReadTransaction {

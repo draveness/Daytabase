@@ -37,7 +37,7 @@ public final class Daytabase {
     public var db: OpaquePointer?
 
     public convenience init() {
-        let file = "database"
+        let file = "database123"
         self.init(file: file)
     }
 
