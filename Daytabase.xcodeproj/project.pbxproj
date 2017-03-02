@@ -22,6 +22,10 @@
 		7270993C1E66F03B00BE40E3 /* Daytabase.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7206F7921E6694E100131CB0 /* Daytabase.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		727099411E66F90D00BE40E3 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099401E66F90D00BE40E3 /* Transaction.swift */; };
 		727099431E6710FD00BE40E3 /* Blob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099421E6710FC00BE40E3 /* Blob.swift */; };
+		727099451E68392E00BE40E3 /* CollectionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099441E68392E00BE40E3 /* CollectionKey.swift */; };
+		7270994D1E68401100BE40E3 /* Murmurhash.h in Headers */ = {isa = PBXBuildFile; fileRef = 727099481E683F4700BE40E3 /* Murmurhash.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7270994E1E68406400BE40E3 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7270994B1E683FDB00BE40E3 /* Utility.swift */; };
+		727099521E684E3500BE40E3 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099511E684E3500BE40E3 /* Cache.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +80,10 @@
 		727099391E66EFD000BE40E3 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		727099401E66F90D00BE40E3 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		727099421E6710FC00BE40E3 /* Blob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blob.swift; sourceTree = "<group>"; };
+		727099441E68392E00BE40E3 /* CollectionKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionKey.swift; sourceTree = "<group>"; };
+		727099481E683F4700BE40E3 /* Murmurhash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Murmurhash.h; sourceTree = "<group>"; };
+		7270994B1E683FDB00BE40E3 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		727099511E684E3500BE40E3 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,12 +139,14 @@
 		7206F7941E6694E100131CB0 /* Daytabase */ = {
 			isa = PBXGroup;
 			children = (
-				7206F7AF1E6694FE00131CB0 /* Core */,
 				7206F7951E6694E100131CB0 /* Daytabase.h */,
 				7206F7B81E66989600131CB0 /* Daytabase.swift */,
 				7206F7C51E669CDD00131CB0 /* Connection.swift */,
+				727099441E68392E00BE40E3 /* CollectionKey.swift */,
 				727099401E66F90D00BE40E3 /* Transaction.swift */,
 				727099421E6710FC00BE40E3 /* Blob.swift */,
+				7206F7AF1E6694FE00131CB0 /* Core */,
+				7270994A1E683F9700BE40E3 /* Utilities */,
 				7206F7961E6694E100131CB0 /* Info.plist */,
 			);
 			path = Daytabase;
@@ -204,6 +214,16 @@
 			path = "Daytabase-iOS";
 			sourceTree = "<group>";
 		};
+		7270994A1E683F9700BE40E3 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				727099481E683F4700BE40E3 /* Murmurhash.h */,
+				7270994B1E683FDB00BE40E3 /* Utility.swift */,
+				727099511E684E3500BE40E3 /* Cache.swift */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -212,6 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7206F7B11E6695BB00131CB0 /* SQLite-Bridging.h in Headers */,
+				7270994D1E68401100BE40E3 /* Murmurhash.h in Headers */,
 				7206F7A31E6694E100131CB0 /* Daytabase.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -350,9 +371,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				727099521E684E3500BE40E3 /* Cache.swift in Sources */,
 				727099431E6710FD00BE40E3 /* Blob.swift in Sources */,
 				7206F7B91E66989600131CB0 /* Daytabase.swift in Sources */,
+				7270994E1E68406400BE40E3 /* Utility.swift in Sources */,
 				7206F7C61E669CDD00131CB0 /* Connection.swift in Sources */,
+				727099451E68392E00BE40E3 /* CollectionKey.swift in Sources */,
 				727099411E66F90D00BE40E3 /* Transaction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
