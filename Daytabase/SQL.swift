@@ -35,6 +35,16 @@ extension Database {
         }
     }
 
+    var rollbackTransactionStatement: OpaquePointer? {
+        get {
+            var statement: OpaquePointer?
+            let sql = "ROLLBACK TRANSACTION;"
+            prepareSQL(sql, statement: &statement, name: #function, in: db)
+            return statement
+        }
+    }
+
+
     static func getSqliteVersionStatement(with database: OpaquePointer?) -> OpaquePointer? {
         var statement: OpaquePointer?
         let sql = "SELECT sqlite_version();"

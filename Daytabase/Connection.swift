@@ -60,7 +60,6 @@ public final class Connection {
     }
 
     func initiailzeObjectCache() {
-//        objectCache = Cache(capacity: 20)
     }
 
     func newReadTransaction() -> ReadTransaction {

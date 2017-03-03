@@ -66,6 +66,13 @@ public class ReadTransaction {
         return nil
     }
 
+    func hasObject(forKey key: String, inCollection collection: String = "") -> Bool {
+        let cacheKey = CollectionKey(key: key, collection: collection)
+        if connection.objectCache.contains(key: cacheKey) { return true }
+        if rowid(forKey: key, inCollection: collection) != 0 { return true }
+        return false
+    }
+
     func begin() {
         guard let statement = connection.database.beginTransactionStatement else { return }
         let status = sqlite3_step(statement)
@@ -82,6 +89,40 @@ public class ReadTransaction {
             Daytabase.log.error("Couldn't commit transaction: \(status) \(daytabase_errmsg(self.connection.db))")
         }
         sqlite3_reset(statement)
+    }
+
+    func rollback() {
+        guard let statement = connection.database.rollbackTransactionStatement else { return }
+        let status = sqlite3_step(statement)
+        if status != SQLITE_DONE {
+            Daytabase.log.error("Couldn't rollback transaction: \(status) \(daytabase_errmsg(self.connection.db))")
+        }
+        sqlite3_reset(statement)
+    }
+
+    func rowid(forKey key: String, inCollection collection: String) -> Int64 {
+        guard let statement = connection.database.getRowidForKeyStatement else { return 0 }
+
+        defer {
+            sqlite3_clear_bindings(statement)
+            sqlite3_reset(statement)
+        }
+
+        let column_idx_result   = SQLITE_COLUMN_START;
+        let bind_idx_collection = SQLITE_BIND_START + 0;
+        let bind_idx_key        = SQLITE_BIND_START + 1;
+
+        sqlite3_bind_text(statement, bind_idx_collection, collection, Int32(collection.characters.count), SQLITE_STATIC)
+        sqlite3_bind_text(statement, bind_idx_key, key, Int32(key.characters.count),  SQLITE_STATIC)
+
+        let status = sqlite3_step(statement)
+        if status == SQLITE_ROW {
+            return sqlite3_column_int64(statement, column_idx_result)
+        } else if status == SQLITE_ERROR {
+            Daytabase.log.error("Error executing 'getRowidForKeyStatement': \(status) \(daytabase_errmsg(self.connection.db)) key(\(key))")
+        }
+
+        return 0
     }
 }
 
@@ -107,29 +148,6 @@ public final class ReadWriteTransaction: ReadTransaction {
 }
 
 extension ReadWriteTransaction {
-    func rowid(forKey key: String, inCollection collection: String) -> Int64 {
-        guard let statement = connection.database.getRowidForKeyStatement else { return 0 }
-        let column_idx_result   = SQLITE_COLUMN_START;
-        let bind_idx_collection = SQLITE_BIND_START + 0;
-        let bind_idx_key        = SQLITE_BIND_START + 1;
-
-        sqlite3_bind_text(statement, bind_idx_collection, collection, Int32(collection.characters.count), SQLITE_STATIC)
-        sqlite3_bind_text(statement, bind_idx_key, key, Int32(key.characters.count),  SQLITE_STATIC)
-
-        let status = sqlite3_step(statement)
-        if status == SQLITE_ROW {
-            return sqlite3_column_int64(statement, column_idx_result)
-        } else if status == SQLITE_ERROR {
-            Daytabase.log.error("Error executing 'getRowidForKeyStatement': \(status) \(daytabase_errmsg(self.connection.db)) key(\(key))")
-        }
-
-        defer {
-            sqlite3_clear_bindings(statement)
-            sqlite3_reset(statement)
-        }
-
-        return 0
-    }
     func insert(object: Any, forKey key: String, inCollection collection: String = "") -> Bool {
         guard let statement = connection.database.insertForRowidStatement else { return false }
 

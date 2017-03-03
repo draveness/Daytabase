@@ -79,7 +79,7 @@ public class Cache {
         return item.value
     }
 
-    func set(object: Any, forKey key: CollectionKey) {
+    public func set(object: Any, forKey key: CollectionKey) {
         if let exisitingItem = dictionary[key] {
             exisitingItem.value = object
 
@@ -167,7 +167,13 @@ public class Cache {
         }
     }
 
-    func removeObject(forKey key: CollectionKey) {
+    public func contains(key inKey: CollectionKey) -> Bool {
+        return dictionary.reduce(false) { result, keyValue in
+            result || (keyValue.key == inKey)
+        }
+    }
+
+    public func removeObject(forKey key: CollectionKey) {
         if let item = dictionary[key] {
             if mostRecentCacheItem == item {
                 mostRecentCacheItem = item.next
@@ -184,13 +190,13 @@ public class Cache {
         }
     }
 
-    func removeObjects(forKeys keys: [CollectionKey]) {
+    public func removeObjects(forKeys keys: [CollectionKey]) {
         for key in keys {
             removeObject(forKey: key)
         }
     }
 
-    func removeAllObjects() {
+    public func removeAllObjects() {
         mostRecentCacheItem = nil
         leastRecentCacheItem = nil
         evictedCacheItem = nil
