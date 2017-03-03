@@ -35,8 +35,6 @@ public class ReadTransaction {
         sqlite3_reset(statement)
     }
     
-    let SQLITE_STATIC = unsafeBitCast(0, to: sqlite3_destructor_type.self)
-
     public func value(forKey key: String, inCollection collection: String = "") -> Any? {
         return object(forkey: key, inCollection: collection)
     }

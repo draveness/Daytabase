@@ -28,7 +28,9 @@ public final class Database {
     let isOnWriteQueueKey = DispatchSpecificKey<Bool>()
 
     var sqliteVersion = "Unknown"
-    var snapshot: UInt64 = 0
+    var snapshot: Int64 = 0
+
+    var connectionStates: [ConnectionState] = []
 
     public var db: OpaquePointer?
 
@@ -135,7 +137,20 @@ public final class Database {
     }
 
     public func newConnection() -> Connection {
-        return Connection(database: self)
+        let connection = Connection(database: self)
+        add(connection: connection)
+        return connection
+    }
+
+    func add(connection: Connection) {
+        connection.connectionQueue.async {
+            self.snapshotQueue.sync {
+                let state = ConnectionState(connection: connection)
+                self.connectionStates.append(state)
+                Daytabase.log.verbose("Created new connection for <\(self): databaseName=\((self.databasePath as NSString).lastPathComponent), connectionCount=\(self.connectionStates.count)>")
+                connection.prepare()
+            }
+        }
     }
 
     func updateTable() {
@@ -157,11 +172,41 @@ public final class Database {
 
     }
 
-    func readSnapshot() -> UInt64 {
+    func readSnapshot() -> Int64 {
+        guard let statement = readSnapshotInExtensionStatement else { return 0 }
+
+        defer { sqlite3_finalize(statement) }
+
+        let column_idx_data    = SQLITE_COLUMN_START
+        let bind_idx_extension = SQLITE_BIND_START + 0
+        let bind_idx_key       = SQLITE_BIND_START + 1
+
+        let ext = ""
+        let key = "snapshot"
+
+        sqlite3_bind_text(statement, bind_idx_extension, ext, Int32(ext.characters.count), SQLITE_STATIC)
+        sqlite3_bind_text(statement, bind_idx_key, key, Int32(key.characters.count), SQLITE_STATIC)
+
+        let status = sqlite3_step(statement)
+        if status == SQLITE_ROW {
+            return sqlite3_column_int64(statement, column_idx_data)
+        } else if status == SQLITE_ERROR {
+            Daytabase.log.error("Error executing 'readSnapshot': \(status) \(daytabase_errmsg(self.db))")
+        }
+
         return 0
     }
 
-    static func sqliteVersion(using: OpaquePointer?) -> String {
-        return "Unknown"
+    static func sqliteVersion(using db: OpaquePointer?) -> String {
+        guard let statement = Database.getSqliteVersionStatement(with: db) else { return "Unknown" }
+        defer { sqlite3_finalize(statement) }
+
+        let status = sqlite3_step(statement)
+        if status != SQLITE_ROW {
+            Daytabase.log.error("Error executing 'sqliteVersion': \(status) \(daytabase_errmsg(db))")
+        }
+
+        guard let text = sqlite3_column_text(statement, SQLITE_COLUMN_START) else { return "Unknown" }
+        return String(cString: text)
     }
 }

@@ -24,7 +24,6 @@
 		7270993B1E66F03B00BE40E3 /* Daytabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7206F7921E6694E100131CB0 /* Daytabase.framework */; };
 		7270993C1E66F03B00BE40E3 /* Daytabase.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7206F7921E6694E100131CB0 /* Daytabase.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		727099411E66F90D00BE40E3 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099401E66F90D00BE40E3 /* Transaction.swift */; };
-		727099431E6710FD00BE40E3 /* Blob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099421E6710FC00BE40E3 /* Blob.swift */; };
 		727099451E68392E00BE40E3 /* CollectionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099441E68392E00BE40E3 /* CollectionKey.swift */; };
 		7270994D1E68401100BE40E3 /* Murmurhash.h in Headers */ = {isa = PBXBuildFile; fileRef = 727099481E683F4700BE40E3 /* Murmurhash.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7270994E1E68406400BE40E3 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7270994B1E683FDB00BE40E3 /* Utility.swift */; };
@@ -34,6 +33,7 @@
 		727099581E69977300BE40E3 /* SQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099571E69977300BE40E3 /* SQL.swift */; };
 		7270995A1E699A9400BE40E3 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099591E699A9400BE40E3 /* Constant.swift */; };
 		7270995E1E699D9500BE40E3 /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 7270995D1E699D9500BE40E3 /* sqlite3.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		727099601E69B04700BE40E3 /* ConnectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7270995F1E69B04700BE40E3 /* ConnectionState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,7 +94,6 @@
 		727099351E66EFBC00BE40E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		727099391E66EFD000BE40E3 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		727099401E66F90D00BE40E3 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
-		727099421E6710FC00BE40E3 /* Blob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blob.swift; sourceTree = "<group>"; };
 		727099441E68392E00BE40E3 /* CollectionKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionKey.swift; sourceTree = "<group>"; };
 		727099481E683F4700BE40E3 /* Murmurhash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Murmurhash.h; sourceTree = "<group>"; };
 		7270994B1E683FDB00BE40E3 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
@@ -104,6 +103,7 @@
 		727099571E69977300BE40E3 /* SQL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQL.swift; sourceTree = "<group>"; };
 		727099591E699A9400BE40E3 /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		7270995D1E699D9500BE40E3 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/sqlite3.h; sourceTree = DEVELOPER_DIR; };
+		7270995F1E69B04700BE40E3 /* ConnectionState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionState.swift; sourceTree = "<group>"; };
 		897A8E9F07EA15BE817F81BB /* Pods-Daytabase-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daytabase-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Daytabase-iOS/Pods-Daytabase-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		9FE7B93E6E8659FF2614BA0F /* Pods_DaytabaseTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DaytabaseTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -171,12 +171,9 @@
 				727099551E698A8800BE40E3 /* Daytabase.swift */,
 				7206F7B81E66989600131CB0 /* Database.swift */,
 				7206F7C51E669CDD00131CB0 /* Connection.swift */,
-				727099441E68392E00BE40E3 /* CollectionKey.swift */,
 				727099401E66F90D00BE40E3 /* Transaction.swift */,
-				727099571E69977300BE40E3 /* SQL.swift */,
-				727099421E6710FC00BE40E3 /* Blob.swift */,
-				727099591E699A9400BE40E3 /* Constant.swift */,
 				7206F7AF1E6694FE00131CB0 /* Core */,
+				727099611E69B04F00BE40E3 /* Internal */,
 				7270994A1E683F9700BE40E3 /* Utilities */,
 				7206F7961E6694E100131CB0 /* Info.plist */,
 			);
@@ -253,10 +250,21 @@
 			isa = PBXGroup;
 			children = (
 				727099481E683F4700BE40E3 /* Murmurhash.h */,
+				727099441E68392E00BE40E3 /* CollectionKey.swift */,
 				7270994B1E683FDB00BE40E3 /* Utility.swift */,
+				727099571E69977300BE40E3 /* SQL.swift */,
+				727099591E699A9400BE40E3 /* Constant.swift */,
 				727099511E684E3500BE40E3 /* Cache.swift */,
 			);
 			name = Utilities;
+			sourceTree = "<group>";
+		};
+		727099611E69B04F00BE40E3 /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				7270995F1E69B04700BE40E3 /* ConnectionState.swift */,
+			);
+			name = Internal;
 			sourceTree = "<group>";
 		};
 		B41240486F6F253308412A0C /* Pods */ = {
@@ -553,13 +561,13 @@
 			files = (
 				727099561E698A8800BE40E3 /* Daytabase.swift in Sources */,
 				727099521E684E3500BE40E3 /* Cache.swift in Sources */,
-				727099431E6710FD00BE40E3 /* Blob.swift in Sources */,
 				7206F7B91E66989600131CB0 /* Database.swift in Sources */,
 				7270994E1E68406400BE40E3 /* Utility.swift in Sources */,
 				7206F7C61E669CDD00131CB0 /* Connection.swift in Sources */,
 				727099581E69977300BE40E3 /* SQL.swift in Sources */,
 				7270995A1E699A9400BE40E3 /* Constant.swift in Sources */,
 				727099451E68392E00BE40E3 /* CollectionKey.swift in Sources */,
+				727099601E69B04700BE40E3 /* ConnectionState.swift in Sources */,
 				727099411E66F90D00BE40E3 /* Transaction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -35,6 +35,12 @@ public final class Connection {
         }
     }
 
+    var snapshot: Int64 = 0
+
+    func prepare() {
+        snapshot = database.snapshot
+    }
+
     public func read(block: (ReadTransaction) -> Void) {
         connectionQueue.sync {
             let transation = self.newReadTransaction()

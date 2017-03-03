@@ -12,6 +12,8 @@ import CSQLite3
 let SQLITE_COLUMN_START: Int32 = 0
 let SQLITE_BIND_START: Int32 = 1
 
+let SQLITE_STATIC = unsafeBitCast(0, to: sqlite3_destructor_type.self)
+
 let extensionTableName = "yap2"
 let defaultTableName = "database2"
 
