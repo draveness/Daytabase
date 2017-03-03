@@ -12,33 +12,20 @@ import CSQLite3
 public class ReadTransaction {
     public let connection: Connection
     let isReadWrite: Bool
+
     init(connection: Connection, readWrite: Bool = false) {
         self.connection = connection
         self.isReadWrite = readWrite
     }
-    
-    func begin() {
-        guard let statement = connection.database.beginTransactionStatement else { return }
-        let status = sqlite3_step(statement)
-        if status != SQLITE_DONE {
-            Daytabase.log.error("Couldn't begin transaction: \(status) \(daytabase_errmsg(self.connection.db))")
-        }
-        sqlite3_reset(statement)
-    }
 
-    func commit() {
-        guard let statement = connection.database.commitTransactionStatement else { return }
-        let status = sqlite3_step(statement)
-        if status != SQLITE_DONE {
-            Daytabase.log.error("Couldn't commit transaction: \(status) \(daytabase_errmsg(self.connection.db))")
-        }
-        sqlite3_reset(statement)
-    }
-    
     public func value(forKey key: String, inCollection collection: String = "") -> Any? {
         return object(forkey: key, inCollection: collection)
     }
 
+    /**
+     * Object access.
+     * Objects are automatically deserialized using database's configured deserializer.
+     **/
     public func object(forkey key: String, inCollection collection: String = "") -> Any? {
         let cacheKey = CollectionKey(key: key, collection: collection)
         if let object = connection.objectCache.object(forKey: cacheKey) {
@@ -79,6 +66,23 @@ public class ReadTransaction {
         return nil
     }
 
+    func begin() {
+        guard let statement = connection.database.beginTransactionStatement else { return }
+        let status = sqlite3_step(statement)
+        if status != SQLITE_DONE {
+            Daytabase.log.error("Couldn't begin transaction: \(status) \(daytabase_errmsg(self.connection.db))")
+        }
+        sqlite3_reset(statement)
+    }
+
+    func commit() {
+        guard let statement = connection.database.commitTransactionStatement else { return }
+        let status = sqlite3_step(statement)
+        if status != SQLITE_DONE {
+            Daytabase.log.error("Couldn't commit transaction: \(status) \(daytabase_errmsg(self.connection.db))")
+        }
+        sqlite3_reset(statement)
+    }
 }
 
 public final class ReadWriteTransaction: ReadTransaction {
