@@ -111,7 +111,18 @@ public class Cache {
                 DaytabaseLog.verbose("key(\(key)) <- existing, already mostRecent")
             }
         } else {
-            let newItem = CacheItem(key: key, value: object)
+
+            // Create new item (or recycle old evicted item)
+            var newItem: CacheItem!
+            if let evictedCacheItem = evictedCacheItem {
+                evictedCacheItem.key = key
+                evictedCacheItem.value = object
+                newItem = evictedCacheItem
+                self.evictedCacheItem = nil
+            } else {
+                newItem = CacheItem(key: key, value: object)
+            }
+
             dictionary[key] = newItem
 
             newItem.next = mostRecentCacheItem
@@ -120,6 +131,7 @@ public class Cache {
 
             if capacity != 0 && dictionary.count > capacity,
                 let keyToEvict = leastRecentCacheItem?.key {
+                DaytabaseLog.verbose("key(\(key)), out(\(self.leastRecentCacheItem?.key))")
 
                 if let _ = evictedCacheItem {
                     leastRecentCacheItem = leastRecentCacheItem?.prev
@@ -153,5 +165,35 @@ public class Cache {
                 i += 1
             }
         }
+    }
+
+    func removeObject(forKey key: CollectionKey) {
+        if let item = dictionary[key] {
+            if mostRecentCacheItem == item {
+                mostRecentCacheItem = item.next
+            } else if item.prev != nil {
+                item.prev?.next = item.next
+            }
+
+            if leastRecentCacheItem == item {
+                leastRecentCacheItem = item.prev
+            } else if item.next != nil {
+                item.next?.prev = item.prev
+            }
+            dictionary.removeValue(forKey: key)
+        }
+    }
+
+    func removeObjects(forKeys keys: [CollectionKey]) {
+        for key in keys {
+            removeObject(forKey: key)
+        }
+    }
+
+    func removeAllObjects() {
+        mostRecentCacheItem = nil
+        leastRecentCacheItem = nil
+        evictedCacheItem = nil
+        dictionary.removeAll()
     }
 }
