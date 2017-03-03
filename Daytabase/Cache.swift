@@ -9,8 +9,8 @@
 import Foundation
 
 
-class CacheItem: CustomStringConvertible, Equatable {
-    let key: CollectionKey
+class CacheItem: Equatable {
+    var key: CollectionKey
     var value: Any {
         didSet {
             self.data = NSKeyedArchiver.archivedData(withRootObject: value)
@@ -30,24 +30,27 @@ class CacheItem: CustomStringConvertible, Equatable {
     static func ==(lhs: CacheItem, rhs: CacheItem) -> Bool {
         return lhs.key == rhs.key && lhs.data == rhs.data
     }
+}
 
+extension CacheItem: CustomStringConvertible {
     var description: String {
-        return "<CacheItem[\(self)] key(\(key))>"
+        return "CacheItem<key: (\(key), value: \(value)>>"
     }
 }
 
-public struct Cache {
+public class Cache {
     public let capacity: Int
 
-    var dictionary: [CollectionKey: CacheItem] = [:]
-    var mostRecentCacheItem: CacheItem?
-    var leastRecentCacheItem: CacheItem?
+    private var dictionary: [CollectionKey: CacheItem] = [:]
+    private var mostRecentCacheItem: CacheItem?
+    private var leastRecentCacheItem: CacheItem?
+    private var evictedCacheItem: CacheItem?
 
-    public init(capacity: Int) {
+    public init(capacity: Int = 0) {
         self.capacity = capacity
     }
 
-    public mutating func object(forKey key: CollectionKey) -> Any? {
+    public func object(forKey key: CollectionKey) -> Any? {
         guard let item = dictionary[key] else { return nil }
         if item != mostRecentCacheItem {
             // Remove item from current position in linked-list.
@@ -76,7 +79,7 @@ public struct Cache {
         return item.value
     }
 
-    mutating func set(object: Any, forKey key: CollectionKey) {
+    func set(object: Any, forKey key: CollectionKey) {
         if let exisitingItem = dictionary[key] {
             exisitingItem.value = object
 
@@ -103,15 +106,51 @@ public struct Cache {
                 mostRecentCacheItem?.prev = exisitingItem
                 mostRecentCacheItem = exisitingItem
 
-                Log.verbose("key(\(key)) <- existing, new mostRecent")
+                DaytabaseLog.verbose("key(\(key)) <- existing, new mostRecent")
             } else {
-                Log.verbose("key(\(key)) <- existing, already mostRecent")
+                DaytabaseLog.verbose("key(\(key)) <- existing, already mostRecent")
             }
         } else {
-            let item = CacheItem(key: key, value: object)
-            dictionary[key] = item
+            let newItem = CacheItem(key: key, value: object)
+            dictionary[key] = newItem
+
+            newItem.next = mostRecentCacheItem
+            mostRecentCacheItem?.prev = newItem
+            mostRecentCacheItem = newItem
+
+            if capacity != 0 && dictionary.count > capacity,
+                let keyToEvict = leastRecentCacheItem?.key {
+
+                if let _ = evictedCacheItem {
+                    leastRecentCacheItem = leastRecentCacheItem?.prev
+                    leastRecentCacheItem?.next = nil
+                } else {
+                    evictedCacheItem = leastRecentCacheItem
+                    leastRecentCacheItem = leastRecentCacheItem?.prev
+                    leastRecentCacheItem?.next = nil
+
+                    evictedCacheItem?.prev = nil
+                    evictedCacheItem?.next = nil
+                }
+                dictionary.removeValue(forKey: keyToEvict)
+            } else {
+                DaytabaseLog.verbose("key(\(key)) <- new, new mostRecent [\(self.dictionary.count) of \(self.capacity)]")
+            }
+
             if let key = dictionary.keys.first, dictionary.count > capacity {
                 dictionary.removeValue(forKey: key)
+            }
+        }
+
+        if DaytabaseLog.outputLevel <= .verbose {
+            DaytabaseLog.verbose("dictionary: \(self.dictionary)")
+
+            var loopItem = mostRecentCacheItem
+            var i = 0
+            while loopItem != nil {
+                DaytabaseLog.verbose("\(i): \(loopItem!)")
+                loopItem = loopItem?.next
+                i += 1
             }
         }
     }

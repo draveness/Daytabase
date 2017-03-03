@@ -13,7 +13,7 @@ import XCGLogger
 public typealias DaytabaseSerializer = (String, String, Any) -> Data
 public typealias DaytabaseDeserializer = (String, String, Data) -> Any?
 
-let Log = XCGLogger.default
+public let DaytabaseLog = XCGLogger.default
 
 let defaultSerializer: DaytabaseSerializer = { (collection: String, key: String, value: Any) in
     return NSKeyedArchiver.archivedData(withRootObject: value)
@@ -69,7 +69,7 @@ public final class Daytabase {
         }
         let result = openConfigCreate()
         if !result {
-            Log.error("Error opening database")
+            DaytabaseLog.error("Error opening database")
         }
     }
     
@@ -80,9 +80,9 @@ public final class Daytabase {
         if status == SQLITE_OK { return true }
     
         if let _ = db {
-            Log.error("Error opening database: \(status) \(daytabase_errmsg(self.db))")
+            DaytabaseLog.error("Error opening database: \(status) \(daytabase_errmsg(self.db))")
         } else {
-            Log.error("Error opening database: \(status)")
+            DaytabaseLog.error("Error opening database: \(status)")
         }
         return false
 
@@ -103,7 +103,7 @@ public final class Daytabase {
             "  PRIMARY KEY (\"extension\", \"key\")" +
             " );"
         if sqlite3_exec(db, createYapTableStatement, nil, nil, nil) != SQLITE_OK {
-            Log.error("Failed creating 'yap2' table: \(daytabase_errmsg(self.db))")
+            DaytabaseLog.error("Failed creating 'yap2' table: \(daytabase_errmsg(self.db))")
             return false
         }
         
@@ -116,13 +116,13 @@ public final class Daytabase {
             "  \"metadata\" BLOB" +
             " );";
         if sqlite3_exec(db, createDatabaseTableStatement, nil, nil, nil) != SQLITE_OK {
-            Log.error("Failed creating 'database2' table: \(daytabase_errmsg(self.db))")
+            DaytabaseLog.error("Failed creating 'database2' table: \(daytabase_errmsg(self.db))")
             return false
         }
       
         let createIndexStatement = "CREATE UNIQUE INDEX IF NOT EXISTS \"true_primary_key\" ON \"database2\" ( \"collection\", \"key\" );"
         if sqlite3_exec(db, createIndexStatement, nil, nil, nil) != SQLITE_OK {
-            Log.error("Failed creating index on 'database2' table: \(daytabase_errmsg(self.db))")
+            DaytabaseLog.error("Failed creating index on 'database2' table: \(daytabase_errmsg(self.db))")
             return false
         }
         return true

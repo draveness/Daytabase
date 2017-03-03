@@ -40,3 +40,8 @@ public struct CollectionKey: Hashable {
     }
 }
 
+extension CollectionKey: CustomStringConvertible {
+    public var description: String {
+        return "CollectionKey<key: \(key), collection: \(collection)>"
+    }
+}

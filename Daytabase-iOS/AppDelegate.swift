@@ -22,7 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window!.backgroundColor = UIColor.white
         self.window!.rootViewController = ViewController()
         self.window!.makeKeyAndVisible()
-
+        DaytabaseLog.setup()
+        DaytabaseLog.outputLevel = .verbose
         connection.readWrite { transaction in
             transaction.set(value: "update", forKey: "draven")
         }

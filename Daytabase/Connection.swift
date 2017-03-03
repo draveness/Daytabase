@@ -28,9 +28,9 @@ public final class Connection {
 
         if status != SQLITE_OK {
             if let _ = db {
-                Log.error("Error opening database: \(status) \(daytabase_errmsg(self.db))")
+                DaytabaseLog.error("Error opening database: \(status) \(daytabase_errmsg(self.db))")
             } else {
-                Log.error("Error opening database: \(status)")
+                DaytabaseLog.error("Error opening database: \(status)")
             }
         }
     }
