@@ -165,11 +165,21 @@ public final class Database {
     }
 
     func beginTransaction() {
-
+        guard let statement = beginTransactionStatement else { return }
+        let status = sqlite3_step(statement)
+        if status != SQLITE_DONE {
+            Daytabase.log.error("Couldn't begin transaction: \(status) \(daytabase_errmsg(self.db))")
+        }
+        sqlite3_reset(statement)
     }
 
     func commitTransaction() {
-
+        guard let statement = commitTransactionStatement else { return }
+        let status = sqlite3_step(statement)
+        if status != SQLITE_DONE {
+            Daytabase.log.error("Couldn't commit transaction: \(status) \(daytabase_errmsg(self.db))")
+        }
+        sqlite3_reset(statement)
     }
 
     func readSnapshot() -> Int64 {
@@ -188,13 +198,13 @@ public final class Database {
         sqlite3_bind_text(statement, bind_idx_key, key, Int32(key.characters.count), SQLITE_STATIC)
 
         let status = sqlite3_step(statement)
-        if status == SQLITE_ROW {
-            return sqlite3_column_int64(statement, column_idx_data)
-        } else if status == SQLITE_ERROR {
+        if status != SQLITE_ROW {
             Daytabase.log.error("Error executing 'readSnapshot': \(status) \(daytabase_errmsg(self.db))")
+            return 0
         }
 
-        return 0
+        return sqlite3_column_int64(statement, column_idx_data)
+
     }
 
     static func sqliteVersion(using db: OpaquePointer?) -> String {
