@@ -1,6 +1,6 @@
 //
 //  Connection.swift
-//  Daytabase
+//  Database
 //
 //  Created by Draveness on 01/03/2017.
 //  Copyright © 2017 Draveness. All rights reserved.
@@ -10,7 +10,7 @@ import Foundation
 import CSQLite3
 
 public final class Connection {
-    public let database: Daytabase
+    public let database: Database
     var objectCache: Cache = Cache(capacity: 20)
 
     let connectionQueue: DispatchQueue = DispatchQueue(label: "DaytabaseConnectionQueue")
@@ -18,7 +18,7 @@ public final class Connection {
 
     var db: OpaquePointer?
 
-    init(database: Daytabase) {
+    init(database: Database) {
         self.database = database
 
         connectionQueue.setSpecific(key: isOnConnectionQueueKey, value: false)
@@ -28,9 +28,9 @@ public final class Connection {
 
         if status != SQLITE_OK {
             if let _ = db {
-                DaytabaseLog.error("Error opening database: \(status) \(daytabase_errmsg(self.db))")
+                Daytabase.Log.error("Error opening database: \(status) \(daytabase_errmsg(self.db))")
             } else {
-                DaytabaseLog.error("Error opening database: \(status)")
+                Daytabase.Log.error("Error opening database: \(status)")
             }
         }
     }

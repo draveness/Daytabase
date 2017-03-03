@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    let connection = Daytabase().newConnection()
+    let connection = Database().newConnection()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         self.window = UIWindow(frame: UIScreen.main.bounds)
@@ -22,8 +22,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window!.backgroundColor = UIColor.white
         self.window!.rootViewController = ViewController()
         self.window!.makeKeyAndVisible()
-        DaytabaseLog.setup()
-        DaytabaseLog.outputLevel = .verbose
+
+        Daytabase.Log.setup()
+        Daytabase.Log.outputLevel = .verbose
+
         connection.readWrite { transaction in
             transaction.set(value: "update", forKey: "draven")
         }

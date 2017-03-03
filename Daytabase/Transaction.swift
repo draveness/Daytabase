@@ -1,6 +1,6 @@
 //
 //  DayTransaction.swift
-//  Daytabase
+//  Database
 //
 //  Created by Draveness on 3/1/17.
 //  Copyright © 2017 Draveness. All rights reserved.
@@ -25,7 +25,7 @@ public class ReadTransaction {
     func prepareSQL(_ sql: String, statement: UnsafeMutablePointer<OpaquePointer?>, name: String) {
         let status = sqlite3_prepare_v2(db, sql, sql.characters.count + 1, statement, nil)
         if status != SQLITE_OK {
-            DaytabaseLog.error("Error creating \(name): \(status) \(daytabase_errmsg(self.db))")
+            Daytabase.Log.error("Error creating \(name): \(status) \(daytabase_errmsg(self.db))")
         }
     }
 
@@ -89,7 +89,7 @@ public class ReadTransaction {
         guard let statement = beginTransactionStatement else { return }
         let status = sqlite3_step(statement)
         if status != SQLITE_DONE {
-            DaytabaseLog.error("Couldn't begin transaction: \(status) \(daytabase_errmsg(self.db))")
+            Daytabase.Log.error("Couldn't begin transaction: \(status) \(daytabase_errmsg(self.db))")
         }
         sqlite3_reset(statement)
     }
@@ -98,7 +98,7 @@ public class ReadTransaction {
         guard let statement = commitTransactionStatement else { return }
         let status = sqlite3_step(statement)
         if status != SQLITE_DONE {
-            DaytabaseLog.error("Couldn't commit transaction: \(status) \(daytabase_errmsg(self.db))")
+            Daytabase.Log.error("Couldn't commit transaction: \(status) \(daytabase_errmsg(self.db))")
         }
         sqlite3_reset(statement)
     }
@@ -144,7 +144,7 @@ public class ReadTransaction {
             }
             return object
         } else if status == SQLITE_ERROR {
-            DaytabaseLog.error("Error executing 'getDataForKeyStatement': \(status) \(daytabase_errmsg(self.db)) key(\(key))")
+            Daytabase.Log.error("Error executing 'getDataForKeyStatement': \(status) \(daytabase_errmsg(self.db)) key(\(key))")
         }
         return nil
     }
@@ -186,7 +186,7 @@ extension ReadWriteTransaction {
         if status == SQLITE_ROW {
             return sqlite3_column_int64(statement, column_idx_result)
         } else if status == SQLITE_ERROR {
-            DaytabaseLog.error("Error executing 'getRowidForKeyStatement': \(status) \(daytabase_errmsg(self.db)) key(\(key))")
+            Daytabase.Log.error("Error executing 'getRowidForKeyStatement': \(status) \(daytabase_errmsg(self.db)) key(\(key))")
         }
 
         defer {
@@ -221,7 +221,7 @@ extension ReadWriteTransaction {
 
         let status = sqlite3_step(statement);
         if status != SQLITE_DONE {
-            DaytabaseLog.error("Error executing 'insertForRowidStatement': \(status) \(daytabase_errmsg(self.db)) key(\(key))")
+            Daytabase.Log.error("Error executing 'insertForRowidStatement': \(status) \(daytabase_errmsg(self.db)) key(\(key))")
             return false
         }
         let _ = sqlite3_last_insert_rowid(db);
@@ -257,7 +257,7 @@ extension ReadWriteTransaction {
 
         let status = sqlite3_step(statement);
         if status != SQLITE_DONE {
-            DaytabaseLog.error("Error executing 'updateAllForRowidStatement': \(status) \(daytabase_errmsg(self.db)) key(\(key))")
+            Daytabase.Log.error("Error executing 'updateAllForRowidStatement': \(status) \(daytabase_errmsg(self.db)) key(\(key))")
             return false
         }
         let _ = sqlite3_last_insert_rowid(db);

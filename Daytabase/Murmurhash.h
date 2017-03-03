@@ -1,6 +1,6 @@
 //
 //  Murmurhash.m
-//  Daytabase
+//  Database
 //
 //  Created by Draveness on 3/2/17.
 //  Copyright © 2017 Draveness. All rights reserved.

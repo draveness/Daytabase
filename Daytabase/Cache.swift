@@ -1,6 +1,6 @@
 //
 //  Cache.swift
-//  Daytabase
+//  Database
 //
 //  Created by Draveness on 3/2/17.
 //  Copyright © 2017 Draveness. All rights reserved.
@@ -106,9 +106,9 @@ public class Cache {
                 mostRecentCacheItem?.prev = exisitingItem
                 mostRecentCacheItem = exisitingItem
 
-                DaytabaseLog.verbose("key(\(key)) <- existing, new mostRecent")
+                Daytabase.Log.verbose("key(\(key)) <- existing, new mostRecent")
             } else {
-                DaytabaseLog.verbose("key(\(key)) <- existing, already mostRecent")
+                Daytabase.Log.verbose("key(\(key)) <- existing, already mostRecent")
             }
         } else {
 
@@ -131,7 +131,7 @@ public class Cache {
 
             if capacity != 0 && dictionary.count > capacity,
                 let keyToEvict = leastRecentCacheItem?.key {
-                DaytabaseLog.verbose("key(\(key)), out(\(self.leastRecentCacheItem?.key))")
+                Daytabase.Log.verbose("key(\(key)), out(\(self.leastRecentCacheItem?.key))")
 
                 if let _ = evictedCacheItem {
                     leastRecentCacheItem = leastRecentCacheItem?.prev
@@ -146,7 +146,7 @@ public class Cache {
                 }
                 dictionary.removeValue(forKey: keyToEvict)
             } else {
-                DaytabaseLog.verbose("key(\(key)) <- new, new mostRecent [\(self.dictionary.count) of \(self.capacity)]")
+                Daytabase.Log.verbose("key(\(key)) <- new, new mostRecent [\(self.dictionary.count) of \(self.capacity)]")
             }
 
             if let key = dictionary.keys.first, dictionary.count > capacity {
@@ -154,13 +154,13 @@ public class Cache {
             }
         }
 
-        if DaytabaseLog.outputLevel <= .verbose {
-            DaytabaseLog.verbose("dictionary: \(self.dictionary)")
+        if Daytabase.Log.outputLevel <= .verbose {
+            Daytabase.Log.verbose("dictionary: \(self.dictionary)")
 
             var loopItem = mostRecentCacheItem
             var i = 0
             while loopItem != nil {
-                DaytabaseLog.verbose("\(i): \(loopItem!)")
+                Daytabase.Log.verbose("\(i): \(loopItem!)")
                 loopItem = loopItem?.next
                 i += 1
             }

@@ -1,6 +1,6 @@
 //
 //  Blob.swift
-//  Daytabase
+//  Database
 //
 //  Created by Draveness on 3/1/17.
 //  Copyright © 2017 Draveness. All rights reserved.

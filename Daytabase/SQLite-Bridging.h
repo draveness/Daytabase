@@ -1,6 +1,6 @@
 //
 //  SQLite-Bridging.h
-//  Daytabase
+//  Database
 //
 //  Created by Draveness on 01/03/2017.
 //  Copyright © 2017 Draveness. All rights reserved.
