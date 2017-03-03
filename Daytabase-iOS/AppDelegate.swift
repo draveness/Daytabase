@@ -23,7 +23,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window!.rootViewController = ViewController()
         self.window!.makeKeyAndVisible()
 
-        Daytabase.Log.setup(level: .verbose, showLogIdentifier: false, showFunctionName: true, showThreadName: false, showLevel: true, showFileNames: false, showLineNumbers: false, showDate: false, writeToFile: nil, fileLevel: nil)
+        #if DEBUG
+            Daytabase.log.setup(level: .debug, showThreadName: true, showLevel: true, showFileNames: true, showLineNumbers: true)
+        #else
+            Daytabase.log.setup(level: .severe, showThreadName: true, showLevel: true, showFileNames: true, showLineNumbers: true)
+        #endif
 
         connection.readWrite { transaction in
             transaction.set(value: "update", forKey: "draven")

@@ -9,96 +9,28 @@
 import Foundation
 import CSQLite3
 
-let SQLITE_COLUMN_START: Int32 = 0
-let SQLITE_BIND_START: Int32 = 1
-
 public class ReadTransaction {
     public let connection: Connection
-    public let db: OpaquePointer?
     let isReadWrite: Bool
     init(connection: Connection, readWrite: Bool = false) {
         self.connection = connection
-        self.db = connection.db
         self.isReadWrite = readWrite
-    }
-
-    func prepareSQL(_ sql: String, statement: UnsafeMutablePointer<OpaquePointer?>, name: String) {
-        let status = sqlite3_prepare_v2(db, sql, sql.characters.count + 1, statement, nil)
-        if status != SQLITE_OK {
-            Daytabase.Log.error("Error creating \(name): \(status) \(daytabase_errmsg(self.db))")
-        }
-    }
-
-    var beginTransactionStatement: OpaquePointer? {
-        get {
-            var statement: OpaquePointer?
-            let sql = "BEGIN TRANSACTION;"
-            self.prepareSQL(sql, statement: &statement, name: #function)
-            return statement
-        }
-    }
-
-    var commitTransactionStatement: OpaquePointer? {
-        get {
-            var statement: OpaquePointer?
-            let sql = "COMMIT TRANSACTION;"
-            self.prepareSQL(sql, statement: &statement, name: #function)
-            return statement
-        }
-    }
-
-    var getDataForKeyStatement: OpaquePointer? {
-        get {
-            var statement: OpaquePointer?
-            let sql = "SELECT \"rowid\", \"data\" FROM \"database2\" WHERE \"collection\" = ? AND \"key\" = ?;"
-            self.prepareSQL(sql, statement: &statement, name: #function)
-            return statement
-        }
-    }
-
-    var insertForRowidStatement: OpaquePointer? {
-        get {
-            var statement: OpaquePointer?
-            let sql =
-                "INSERT INTO \"database2\"" +
-            " (\"collection\", \"key\", \"data\", \"metadata\") VALUES (?, ?, ?, ?);"
-            self.prepareSQL(sql, statement: &statement, name: #function)
-            return statement
-        }
-    }
-    
-    var updateAllForRowidStatement: OpaquePointer? {
-        get {
-            var statement: OpaquePointer?
-            let sql = "UPDATE \"database2\" SET \"data\" = ?, \"metadata\" = ? WHERE \"rowid\" = ?;"
-            self.prepareSQL(sql, statement: &statement, name: #function)
-            return statement
-        }
-    }
-    
-    var getRowidForKeyStatement: OpaquePointer? {
-        get {
-            var statement: OpaquePointer?
-            let sql = "SELECT \"rowid\" FROM \"database2\" WHERE \"collection\" = ? AND \"key\" = ?;"
-            self.prepareSQL(sql, statement: &statement, name: #function)
-            return statement
-        }
     }
     
     func begin() {
-        guard let statement = beginTransactionStatement else { return }
+        guard let statement = connection.database.beginTransactionStatement else { return }
         let status = sqlite3_step(statement)
         if status != SQLITE_DONE {
-            Daytabase.Log.error("Couldn't begin transaction: \(status) \(daytabase_errmsg(self.db))")
+            Daytabase.log.error("Couldn't begin transaction: \(status) \(daytabase_errmsg(self.connection.db))")
         }
         sqlite3_reset(statement)
     }
 
     func commit() {
-        guard let statement = commitTransactionStatement else { return }
+        guard let statement = connection.database.commitTransactionStatement else { return }
         let status = sqlite3_step(statement)
         if status != SQLITE_DONE {
-            Daytabase.Log.error("Couldn't commit transaction: \(status) \(daytabase_errmsg(self.db))")
+            Daytabase.log.error("Couldn't commit transaction: \(status) \(daytabase_errmsg(self.connection.db))")
         }
         sqlite3_reset(statement)
     }
@@ -115,7 +47,7 @@ public class ReadTransaction {
             return object
         }
 
-        guard let statement = getDataForKeyStatement else { return nil }
+        guard let statement = connection.database.getDataForKeyStatement else { return nil }
 
         defer {
             sqlite3_clear_bindings(statement)
@@ -144,7 +76,7 @@ public class ReadTransaction {
             }
             return object
         } else if status == SQLITE_ERROR {
-            Daytabase.Log.error("Error executing 'getDataForKeyStatement': \(status) \(daytabase_errmsg(self.db)) key(\(key))")
+            Daytabase.log.error("Error executing 'getDataForKeyStatement': \(status) \(daytabase_errmsg(self.connection.db)) key(\(key))")
         }
         return nil
     }
@@ -174,7 +106,7 @@ public final class ReadWriteTransaction: ReadTransaction {
 
 extension ReadWriteTransaction {
     func rowid(forKey key: String, inCollection collection: String) -> Int64 {
-        guard let statement = getRowidForKeyStatement else { return 0 }
+        guard let statement = connection.database.getRowidForKeyStatement else { return 0 }
         let column_idx_result   = SQLITE_COLUMN_START;
         let bind_idx_collection = SQLITE_BIND_START + 0;
         let bind_idx_key        = SQLITE_BIND_START + 1;
@@ -186,7 +118,7 @@ extension ReadWriteTransaction {
         if status == SQLITE_ROW {
             return sqlite3_column_int64(statement, column_idx_result)
         } else if status == SQLITE_ERROR {
-            Daytabase.Log.error("Error executing 'getRowidForKeyStatement': \(status) \(daytabase_errmsg(self.db)) key(\(key))")
+            Daytabase.log.error("Error executing 'getRowidForKeyStatement': \(status) \(daytabase_errmsg(self.connection.db)) key(\(key))")
         }
 
         defer {
@@ -197,7 +129,7 @@ extension ReadWriteTransaction {
         return 0
     }
     func insert(object: Any, forKey key: String, inCollection collection: String = "") -> Bool {
-        guard let statement = insertForRowidStatement else { return false }
+        guard let statement = connection.database.insertForRowidStatement else { return false }
 
         defer {
             sqlite3_clear_bindings(statement)
@@ -221,15 +153,15 @@ extension ReadWriteTransaction {
 
         let status = sqlite3_step(statement);
         if status != SQLITE_DONE {
-            Daytabase.Log.error("Error executing 'insertForRowidStatement': \(status) \(daytabase_errmsg(self.db)) key(\(key))")
+            Daytabase.log.error("Error executing 'insertForRowidStatement': \(status) \(daytabase_errmsg(self.connection.db)) key(\(key))")
             return false
         }
-        let _ = sqlite3_last_insert_rowid(db);
+        let _ = sqlite3_last_insert_rowid(connection.db);
         return true
     }
 
     func update(object: Any, forKey key: String, inCollection collection: String = "") -> Bool {
-        guard let statement = updateAllForRowidStatement else { return false }
+        guard let statement = connection.database.updateAllForRowidStatement else { return false }
 
         defer {
             sqlite3_clear_bindings(statement)
@@ -257,10 +189,10 @@ extension ReadWriteTransaction {
 
         let status = sqlite3_step(statement);
         if status != SQLITE_DONE {
-            Daytabase.Log.error("Error executing 'updateAllForRowidStatement': \(status) \(daytabase_errmsg(self.db)) key(\(key))")
+            Daytabase.log.error("Error executing 'updateAllForRowidStatement': \(status) \(daytabase_errmsg(self.connection.db)) key(\(key))")
             return false
         }
-        let _ = sqlite3_last_insert_rowid(db);
+        let _ = sqlite3_last_insert_rowid(connection.db);
         return true
     }
 }

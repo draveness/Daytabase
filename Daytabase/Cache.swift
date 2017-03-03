@@ -106,9 +106,9 @@ public class Cache {
                 mostRecentCacheItem?.prev = exisitingItem
                 mostRecentCacheItem = exisitingItem
 
-                Daytabase.Log.verbose("key(\(key)) <- existing, new mostRecent")
+                Daytabase.log.verbose("key(\(key)) <- existing, new mostRecent")
             } else {
-                Daytabase.Log.verbose("key(\(key)) <- existing, already mostRecent")
+                Daytabase.log.verbose("key(\(key)) <- existing, already mostRecent")
             }
         } else {
 
@@ -131,7 +131,7 @@ public class Cache {
 
             if capacity != 0 && dictionary.count > capacity,
                 let keyToEvict = leastRecentCacheItem?.key {
-                Daytabase.Log.verbose("key(\(key)), out(\(self.leastRecentCacheItem?.key))")
+                Daytabase.log.verbose("key(\(key)), out(\(self.leastRecentCacheItem?.key))")
 
                 if let _ = evictedCacheItem {
                     leastRecentCacheItem = leastRecentCacheItem?.prev
@@ -146,7 +146,7 @@ public class Cache {
                 }
                 dictionary.removeValue(forKey: keyToEvict)
             } else {
-                Daytabase.Log.verbose("key(\(key)) <- new, new mostRecent [\(self.dictionary.count) of \(self.capacity)]")
+                Daytabase.log.verbose("key(\(key)) <- new, new mostRecent [\(self.dictionary.count) of \(self.capacity)]")
             }
 
             if let key = dictionary.keys.first, dictionary.count > capacity {
@@ -154,13 +154,13 @@ public class Cache {
             }
         }
 
-        if Daytabase.Log.outputLevel <= .verbose {
-            Daytabase.Log.verbose("dictionary: \(self.dictionary)")
+        if Daytabase.log.outputLevel <= .verbose {
+            Daytabase.log.verbose("dictionary: \(self.dictionary)")
 
             var loopItem = mostRecentCacheItem
             var i = 0
             while loopItem != nil {
-                Daytabase.Log.verbose("\(i): \(loopItem!)")
+                Daytabase.log.verbose("\(i): \(loopItem!)")
                 loopItem = loopItem?.next
                 i += 1
             }

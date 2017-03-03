@@ -11,5 +11,5 @@ import CSQLite3
 import XCGLogger
 
 public struct Daytabase {
-    public static let Log = XCGLogger.default
+    public static let log = XCGLogger.default
 }

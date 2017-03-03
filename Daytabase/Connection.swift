@@ -13,7 +13,7 @@ public final class Connection {
     public let database: Database
     var objectCache: Cache = Cache(capacity: 20)
 
-    let connectionQueue: DispatchQueue = DispatchQueue(label: "DaytabaseConnectionQueue")
+    let connectionQueue: DispatchQueue = DispatchQueue(label: "daytabase.connection.queue")
     let isOnConnectionQueueKey = DispatchSpecificKey<Bool>()
 
     var db: OpaquePointer?
@@ -28,9 +28,9 @@ public final class Connection {
 
         if status != SQLITE_OK {
             if let _ = db {
-                Daytabase.Log.error("Error opening database: \(status) \(daytabase_errmsg(self.db))")
+                Daytabase.log.error("Error opening database: \(status) \(daytabase_errmsg(self.db))")
             } else {
-                Daytabase.Log.error("Error opening database: \(status)")
+                Daytabase.log.error("Error opening database: \(status)")
             }
         }
     }

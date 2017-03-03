@@ -31,6 +31,9 @@
 		727099521E684E3500BE40E3 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099511E684E3500BE40E3 /* Cache.swift */; };
 		727099541E685F1300BE40E3 /* XCGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 727099531E685F1300BE40E3 /* XCGLogger.framework */; };
 		727099561E698A8800BE40E3 /* Daytabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099551E698A8800BE40E3 /* Daytabase.swift */; };
+		727099581E69977300BE40E3 /* SQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099571E69977300BE40E3 /* SQL.swift */; };
+		7270995A1E699A9400BE40E3 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099591E699A9400BE40E3 /* Constant.swift */; };
+		7270995E1E699D9500BE40E3 /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 7270995D1E699D9500BE40E3 /* sqlite3.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +101,9 @@
 		727099511E684E3500BE40E3 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		727099531E685F1300BE40E3 /* XCGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCGLogger.framework; path = "../../Library/Developer/Xcode/DerivedData/Daytabase-gaskcvqebxtercfdiosmspbekbfj/Build/Products/Debug-iphoneos/XCGLogger/XCGLogger.framework"; sourceTree = "<group>"; };
 		727099551E698A8800BE40E3 /* Daytabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Daytabase.swift; sourceTree = "<group>"; };
+		727099571E69977300BE40E3 /* SQL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQL.swift; sourceTree = "<group>"; };
+		727099591E699A9400BE40E3 /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		7270995D1E699D9500BE40E3 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/sqlite3.h; sourceTree = DEVELOPER_DIR; };
 		897A8E9F07EA15BE817F81BB /* Pods-Daytabase-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daytabase-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Daytabase-iOS/Pods-Daytabase-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		9FE7B93E6E8659FF2614BA0F /* Pods_DaytabaseTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DaytabaseTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -160,13 +166,16 @@
 		7206F7941E6694E100131CB0 /* Daytabase */ = {
 			isa = PBXGroup;
 			children = (
+				7270995D1E699D9500BE40E3 /* sqlite3.h */,
 				7206F7951E6694E100131CB0 /* Daytabase.h */,
 				727099551E698A8800BE40E3 /* Daytabase.swift */,
 				7206F7B81E66989600131CB0 /* Database.swift */,
 				7206F7C51E669CDD00131CB0 /* Connection.swift */,
 				727099441E68392E00BE40E3 /* CollectionKey.swift */,
 				727099401E66F90D00BE40E3 /* Transaction.swift */,
+				727099571E69977300BE40E3 /* SQL.swift */,
 				727099421E6710FC00BE40E3 /* Blob.swift */,
+				727099591E699A9400BE40E3 /* Constant.swift */,
 				7206F7AF1E6694FE00131CB0 /* Core */,
 				7270994A1E683F9700BE40E3 /* Utilities */,
 				7206F7961E6694E100131CB0 /* Info.plist */,
@@ -181,7 +190,7 @@
 				7206F7A21E6694E100131CB0 /* Info.plist */,
 			);
 			path = DaytabaseTests;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		7206F7AC1E6694ED00131CB0 /* Frameworks */ = {
 			isa = PBXGroup;
@@ -270,6 +279,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7270995E1E699D9500BE40E3 /* sqlite3.h in Headers */,
 				7206F7B11E6695BB00131CB0 /* SQLite-Bridging.h in Headers */,
 				7270994D1E68401100BE40E3 /* Murmurhash.h in Headers */,
 				7206F7A31E6694E100131CB0 /* Daytabase.h in Headers */,
@@ -547,6 +557,8 @@
 				7206F7B91E66989600131CB0 /* Database.swift in Sources */,
 				7270994E1E68406400BE40E3 /* Utility.swift in Sources */,
 				7206F7C61E669CDD00131CB0 /* Connection.swift in Sources */,
+				727099581E69977300BE40E3 /* SQL.swift in Sources */,
+				7270995A1E699A9400BE40E3 /* Constant.swift in Sources */,
 				727099451E68392E00BE40E3 /* CollectionKey.swift in Sources */,
 				727099411E66F90D00BE40E3 /* Transaction.swift in Sources */,
 			);
