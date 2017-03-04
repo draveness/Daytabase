@@ -10,12 +10,48 @@ import Foundation
 import CSQLite3
 
 public class ReadTransaction {
-    public let connection: Connection
+    public unowned let connection: Connection
     let isReadWrite: Bool
 
     init(connection: Connection, readWrite: Bool = false) {
         self.connection = connection
         self.isReadWrite = readWrite
+    }
+
+    // MARK: - Count
+
+    public func numberOfCollections() -> Int {
+        guard let statement = connection.database.getCollectionCountStatement else { return 0 }
+
+        defer {
+            sqlite3_reset(statement)
+        }
+
+        let status = sqlite3_step(statement)
+        if status == SQLITE_ROW {
+            return Int(sqlite3_column_int64(statement, SQLITE_COLUMN_START))
+        } else if status == SQLITE_ERROR {
+            Daytabase.log.error("Error executing 'getCollectionCountStatement': \(status) \(daytabase_errmsg(self.connection.db))")
+        }
+        return 0
+    }
+
+    public func numberOfKeys(inCollection collection: String = "") -> Int {
+        guard let statement = connection.database.getCollectionCountStatement else { return 0 }
+
+        defer {
+            sqlite3_clear_bindings(statement)
+            sqlite3_reset(statement)
+        }
+
+        sqlite3_bind_text(statement, SQLITE_BIND_START, collection, Int32(collection.characters.count), SQLITE_STATIC)
+        let status = sqlite3_step(statement)
+        if status == SQLITE_ROW {
+            return Int(sqlite3_column_int64(statement, SQLITE_COLUMN_START))
+        } else if status == SQLITE_ERROR {
+            Daytabase.log.error("Error executing 'getKeyCountForCollectionStatement': \(status) \(daytabase_errmsg(self.connection.db))")
+        }
+        return 0
     }
 
     public func value(forKey key: String, inCollection collection: String = "") -> Any? {
@@ -38,6 +74,11 @@ public class ReadTransaction {
             sqlite3_clear_bindings(statement)
             sqlite3_reset(statement)
         }
+        defer {
+            sqlite3_clear_bindings(statement)
+            sqlite3_reset(statement)
+        }
+
         let column_idx_rowid = SQLITE_COLUMN_START
         let column_idx_data = SQLITE_COLUMN_START + 1
         
@@ -73,6 +114,7 @@ public class ReadTransaction {
         return false
     }
 
+    // MARK: - Transaction States
 
     func begin() {
         guard let statement = connection.database.beginTransactionStatement else { return }
@@ -128,6 +170,9 @@ public class ReadTransaction {
 }
 
 public final class ReadWriteTransaction: ReadTransaction {
+
+    // MARK: - Object & Metadata
+
     public func set(value: Any, forKey key: String, inCollection collection: String = "") {
         set(object: value, forKey: key, inCollection: collection)
     }
@@ -148,6 +193,8 @@ public final class ReadWriteTransaction: ReadTransaction {
     }
 }
 
+
+// MARK: - Internal
 extension ReadWriteTransaction {
     func insert(object: Any, forKey key: String, inCollection collection: String = "") -> Bool {
         guard let statement = connection.database.insertForRowidStatement else { return false }

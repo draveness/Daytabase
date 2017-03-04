@@ -40,7 +40,7 @@ public final class Connection {
 
     var longLivedReadTransaction: ReadTransaction?
 
-    var lock: OSSpinLock = OS_SPINLOCK_INIT
+    var lock: os_unfair_lock = OS_UNFAIR_LOCK_INIT
     var writeQueueSuspended: Bool = false
     var activeReadWriteTransaction: Bool = false
 
@@ -167,19 +167,19 @@ public final class Connection {
     }
 
     func preWriteQueue() {
-        OSSpinLockLock(&self.lock)
+        os_unfair_lock_lock(&lock)
         if writeQueueSuspended {
             self.database.writeQueue.resume()
             writeQueueSuspended = false
         }
         activeReadWriteTransaction = true
-        OSSpinLockUnlock(&self.lock)
+        os_unfair_lock_unlock(&lock)
     }
 
     func postWriteQueue() {
-        OSSpinLockLock(&self.lock)
+        os_unfair_lock_lock(&lock)
         activeReadWriteTransaction = false
-        OSSpinLockUnlock(&self.lock)
+        os_unfair_lock_unlock(&lock)
     }
 }
 
