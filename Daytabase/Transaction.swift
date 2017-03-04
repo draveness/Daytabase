@@ -54,6 +54,22 @@ public class ReadTransaction {
         return 0
     }
 
+    public func numberOfKeysInAllCollections() -> Int {
+        guard let statement = connection.database.getKeyCountForAllStatement else { return 0 }
+
+        defer {
+            sqlite3_reset(statement)
+        }
+
+        let status = sqlite3_step(statement)
+        if status == SQLITE_ROW {
+            return Int(sqlite3_column_int64(statement, SQLITE_COLUMN_START))
+        } else if status == SQLITE_ERROR {
+            Daytabase.log.error("Error executing 'getKeyCountForAllStatement': \(status) \(daytabase_errmsg(self.connection.db))")
+        }
+        return 0
+    }
+
     public func value(forKey key: String, inCollection collection: String = "") -> Any? {
         return object(forkey: key, inCollection: collection)
     }
