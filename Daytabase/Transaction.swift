@@ -44,7 +44,7 @@ public class ReadTransaction {
             sqlite3_reset(statement)
         }
 
-        sqlite3_bind_text(statement, SQLITE_BIND_START, collection, Int32(collection.characters.count), SQLITE_STATIC)
+        sqlite3_bind_text(statement, SQLITE_BIND_START, collection, collection.length, SQLITE_STATIC)
         let status = sqlite3_step(statement)
         if status == SQLITE_ROW {
             return Int(sqlite3_column_int64(statement, SQLITE_COLUMN_START))
@@ -68,6 +68,12 @@ public class ReadTransaction {
             Daytabase.log.error("Error executing 'getKeyCountForAllStatement': \(status) \(daytabase_errmsg(self.connection.db))")
         }
         return 0
+    }
+
+    // MARK: - List
+
+    public func allCollections() -> [String] {
+        return []
     }
 
     public func value(forKey key: String, inCollection collection: String = "") -> Any? {
@@ -97,12 +103,12 @@ public class ReadTransaction {
 
         let column_idx_rowid = SQLITE_COLUMN_START
         let column_idx_data = SQLITE_COLUMN_START + 1
-        
+
         let bind_idx_collection = SQLITE_BIND_START
         let bind_idx_key = SQLITE_BIND_START + 1
-        
-        sqlite3_bind_text(statement, bind_idx_collection, collection, Int32(collection.characters.count), SQLITE_STATIC)
-        sqlite3_bind_text(statement, bind_idx_key, key, Int32(key.characters.count), SQLITE_STATIC)
+
+        sqlite3_bind_text(statement, bind_idx_collection, collection, collection.length, SQLITE_STATIC)
+        sqlite3_bind_text(statement, bind_idx_key, key, key.length, SQLITE_STATIC)
 
         let status = sqlite3_step(statement)
         if status == SQLITE_ROW {
@@ -171,8 +177,8 @@ public class ReadTransaction {
         let bind_idx_collection = SQLITE_BIND_START + 0;
         let bind_idx_key        = SQLITE_BIND_START + 1;
 
-        sqlite3_bind_text(statement, bind_idx_collection, collection, Int32(collection.characters.count), SQLITE_STATIC)
-        sqlite3_bind_text(statement, bind_idx_key, key, Int32(key.characters.count),  SQLITE_STATIC)
+        sqlite3_bind_text(statement, bind_idx_collection, collection, collection.length, SQLITE_STATIC)
+        sqlite3_bind_text(statement, bind_idx_key, key, key.length,  SQLITE_STATIC)
 
         let status = sqlite3_step(statement)
         if status == SQLITE_ROW {
@@ -228,8 +234,8 @@ extension ReadWriteTransaction {
         let serializedObject = connection.database.objectSerializer(collection, key, object) as NSData
         let serializedMetadata = NSData()
 
-        sqlite3_bind_text(statement, bind_idx_collection, collection, Int32(collection.characters.count), SQLITE_STATIC)
-        sqlite3_bind_text(statement, bind_idx_key, key, Int32(key.characters.count), SQLITE_STATIC)
+        sqlite3_bind_text(statement, bind_idx_collection, collection, collection.length, SQLITE_STATIC)
+        sqlite3_bind_text(statement, bind_idx_key, key, key.length, SQLITE_STATIC)
         sqlite3_bind_blob(statement, bind_idx_data,
                           serializedObject.bytes, Int32(serializedObject.length), SQLITE_STATIC);
         sqlite3_bind_blob(statement, bind_idx_metadata,

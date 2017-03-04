@@ -31,6 +31,35 @@ public final class Database {
     var snapshot: Int64 = 0
 
     var connectionStates: [ConnectionState] = []
+    let connectionDefaults: ConnectionDefaults = ConnectionDefaults()
+
+    static let DEFAULT_MAX_CONNECTION_POOL_COUNT = 5    // connections
+    static let DEFAULT_CONNECTION_POOL_LIFETIME =  90.0 // seconds
+
+    private var _maxConnectionPoolCount: Int = DEFAULT_MAX_CONNECTION_POOL_COUNT
+    public var maxConnectionPoolCount: Int {
+        get {
+            var result: Int!
+            internalQueue.sync {
+                result = self._maxConnectionPoolCount
+            }
+            return result
+        }
+    }
+    private var _connectionPoolLifetime: TimeInterval = DEFAULT_CONNECTION_POOL_LIFETIME
+    public var connectionPoolLifetime: TimeInterval {
+        get {
+            var result: TimeInterval!
+            internalQueue.sync {
+                result = self._connectionPoolLifetime
+            }
+            return result
+        }
+    }
+
+    var connectionPoolTimer: DispatchSourceTimer
+    var connectionPoolValues: [[String: NSValue]] = [[:]]
+    var connectionPoolDates: [Date] = []
 
     public var db: OpaquePointer?
 
@@ -55,6 +84,12 @@ public final class Database {
         self.metadataSerializer = metadataSerializer
         self.metadataDeserializer = metadataDeserializer
 
+        // Initialize variables
+
+        connectionPoolTimer = DispatchSource.makeTimerSource(queue: internalQueue)
+
+        // Open database
+
         let isNewDatabase = FileManager.default.fileExists(atPath: path)
         
         let openConfigCreate = { () -> Bool in 
@@ -71,17 +106,25 @@ public final class Database {
             return nil
         }
 
+        // Mark the queues so we can identify them.
+        // There are several methods whose use is restricted to within a certain queue.
+
         snapshotQueue.setSpecific(key: isOnSnapshotQueueKey, value: false)
         writeQueue.setSpecific(key: isOnWriteQueueKey, value: false)
 
+        // Complete database setup in the background
+
         snapshotQueue.async {
             autoreleasepool {
-                self.updateTable()
+                self.upgradeTable()
                 self.prepare()
             }
         }
     }
-    
+
+
+    // MARK: - Setup
+
     func openDatabase() -> Bool {
         let flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_PRIVATECACHE
         let status = sqlite3_open_v2(databasePath, &db, flags, nil)
@@ -136,25 +179,27 @@ public final class Database {
         return true
     }
 
-    public func newConnection() -> Connection {
-        let connection = Connection(database: self)
-        add(connection: connection)
-        return connection
-    }
+    // MARK: - Utilities
 
-    func add(connection: Connection) {
-        connection.connectionQueue.async {
-            self.snapshotQueue.sync {
-                let state = ConnectionState(connection: connection)
-                self.connectionStates.append(state)
-                Daytabase.log.verbose("Created new connection for <\(self): databaseName=\((self.databasePath as NSString).lastPathComponent), connectionCount=\(self.connectionStates.count)>")
-                connection.prepare()
-            }
+    static func sqliteVersion(using db: OpaquePointer?) -> String {
+        guard let statement = Database.getSqliteVersionStatement(with: db) else { return "Unknown" }
+        defer { sqlite3_finalize(statement) }
+
+        let status = sqlite3_step(statement)
+        if status != SQLITE_ROW {
+            Daytabase.log.error("Error executing 'sqliteVersion': \(status) \(daytabase_errmsg(db))")
         }
+
+        guard let text = sqlite3_column_text(statement, SQLITE_COLUMN_START) else { return "Unknown" }
+        return String(cString: text)
     }
 
-    func updateTable() {
+    // MARK: - Upgrade
+
+    func upgradeTable() {
     }
+
+    // MARK: - Prepare
 
     func prepare() {
         beginTransaction()
@@ -194,8 +239,8 @@ public final class Database {
         let ext = ""
         let key = "snapshot"
 
-        sqlite3_bind_text(statement, bind_idx_extension, ext, Int32(ext.characters.count), SQLITE_STATIC)
-        sqlite3_bind_text(statement, bind_idx_key, key, Int32(key.characters.count), SQLITE_STATIC)
+        sqlite3_bind_text(statement, bind_idx_extension, ext, ext.length, SQLITE_STATIC)
+        sqlite3_bind_text(statement, bind_idx_key, key, key.length, SQLITE_STATIC)
 
         let status = sqlite3_step(statement)
         if status != SQLITE_ROW {
@@ -204,19 +249,73 @@ public final class Database {
         }
 
         return sqlite3_column_int64(statement, column_idx_data)
-
     }
 
-    static func sqliteVersion(using db: OpaquePointer?) -> String {
-        guard let statement = Database.getSqliteVersionStatement(with: db) else { return "Unknown" }
-        defer { sqlite3_finalize(statement) }
+    func writeSnapshot() {
+        guard let statement = writeSnapshotInExtensionStatement else { return }
+
+        let bind_idx_extension = SQLITE_BIND_START + 0
+        let bind_idx_key       = SQLITE_BIND_START + 1
+        let bind_idx_data      = SQLITE_BIND_START + 2
+
+        let ext = ""
+        let key = "snapshot"
+        sqlite3_bind_text(statement, bind_idx_extension, ext, ext.length, SQLITE_STATIC)
+        sqlite3_bind_text(statement, bind_idx_key, key, key.length, SQLITE_STATIC)
+        sqlite3_bind_int64(statement, bind_idx_data, snapshot);
 
         let status = sqlite3_step(statement)
-        if status != SQLITE_ROW {
-            Daytabase.log.error("Error executing 'sqliteVersion': \(status) \(daytabase_errmsg(db))")
+        if status != SQLITE_DONE {
+            Daytabase.log.error("Error in statement: \(status) \(daytabase_errmsg(self.db))")
+        }
+        
+        sqlite3_finalize(statement)
+    }
+
+    // MARK: - Connections
+
+    private func add(connection: Connection) {
+        connection.connectionQueue.async {
+            self.snapshotQueue.sync {
+                let state = ConnectionState(connection: connection)
+                self.connectionStates.append(state)
+                Daytabase.log.verbose("Created new connection for <\(self): databaseName=\((self.databasePath as NSString).lastPathComponent), connectionCount=\(self.connectionStates.count)>")
+                connection.prepare()
+            }
+        }
+    }
+
+    private func remove(connection: Connection) {
+        let block = {
+            var index = 0
+            for state in self.connectionStates {
+                if let stateConnection = state.connection,
+                    stateConnection == connection {
+
+                }
+                index += 1
+            }
+            Daytabase.log.verbose("Removed connection from <\(self): databaseName=\((self.databasePath as NSString).lastPathComponent), connectionCount=\(self.connectionStates.count)>")
         }
 
-        guard let text = sqlite3_column_text(statement, SQLITE_COLUMN_START) else { return "Unknown" }
-        return String(cString: text)
+        // We prefer to invoke this method synchronously.
+        //
+        // The connection may be the last object retaining the database.
+        // It's easier to trace object deallocations when they happen in a predictable order.
+
+        if snapshotQueue.getSpecific(key: isOnSnapshotQueueKey)! {
+            block()
+        } else {
+            snapshotQueue.sync(execute: block)
+        }
     }
+
+    public func newConnection() -> Connection {
+        let connection = Connection(database: self)
+        add(connection: connection)
+        return connection
+    }
+
+    // MARK: - Extensions
+
 }

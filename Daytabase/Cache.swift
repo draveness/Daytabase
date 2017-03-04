@@ -9,7 +9,7 @@
 import Foundation
 
 
-class CacheItem: Equatable {
+class CacheItem: NSObject {
     var key: CollectionKey
     var value: Any {
         didSet {
@@ -25,16 +25,8 @@ class CacheItem: Equatable {
         self.key = key
         self.value = value
         self.data = NSKeyedArchiver.archivedData(withRootObject: value)
-    }
 
-    static func ==(lhs: CacheItem, rhs: CacheItem) -> Bool {
-        return lhs.key == rhs.key && lhs.data == rhs.data
-    }
-}
-
-extension CacheItem: CustomStringConvertible {
-    var description: String {
-        return "CacheItem<key: (\(key), value: \(value)>>"
+        super.init()
     }
 }
 

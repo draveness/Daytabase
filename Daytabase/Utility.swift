@@ -13,3 +13,9 @@ struct Utility {
         return Int(DayMurmurHash2(UInt(hash1), UInt(hash2)))
     }
 }
+
+extension String {
+    var length: Int32 {
+        return Int32(self.characters.count)
+    }
+}

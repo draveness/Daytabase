@@ -9,7 +9,13 @@
 import Foundation
 import CSQLite3
 
-public final class Connection {
+enum DatabasePolicy: Int {
+    case containment
+    case share
+    case copy
+}
+
+public final class Connection: NSObject {
     let database: Database
     var db: OpaquePointer?
 
@@ -21,6 +27,8 @@ public final class Connection {
 
     init(database: Database) {
         self.database = database
+
+        super.init()
 
         connectionQueue.setSpecific(key: isOnConnectionQueueKey, value: false)
 
@@ -34,6 +42,7 @@ public final class Connection {
                 Daytabase.log.error("Error opening database: \(status)")
             }
         }
+
     }
 
     var snapshot: Int64 = 0

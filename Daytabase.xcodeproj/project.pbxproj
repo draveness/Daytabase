@@ -34,6 +34,7 @@
 		7270995A1E699A9400BE40E3 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099591E699A9400BE40E3 /* Constant.swift */; };
 		7270995E1E699D9500BE40E3 /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 7270995D1E699D9500BE40E3 /* sqlite3.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		727099601E69B04700BE40E3 /* ConnectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7270995F1E69B04700BE40E3 /* ConnectionState.swift */; };
+		727099661E6AA43300BE40E3 /* ConnectionDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727099651E6AA43300BE40E3 /* ConnectionDefaults.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +105,7 @@
 		727099591E699A9400BE40E3 /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		7270995D1E699D9500BE40E3 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/sqlite3.h; sourceTree = DEVELOPER_DIR; };
 		7270995F1E69B04700BE40E3 /* ConnectionState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionState.swift; sourceTree = "<group>"; };
+		727099651E6AA43300BE40E3 /* ConnectionDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionDefaults.swift; sourceTree = "<group>"; };
 		897A8E9F07EA15BE817F81BB /* Pods-Daytabase-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daytabase-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Daytabase-iOS/Pods-Daytabase-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		9FE7B93E6E8659FF2614BA0F /* Pods_DaytabaseTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DaytabaseTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -171,6 +173,7 @@
 				727099551E698A8800BE40E3 /* Daytabase.swift */,
 				7206F7B81E66989600131CB0 /* Database.swift */,
 				7206F7C51E669CDD00131CB0 /* Connection.swift */,
+				727099651E6AA43300BE40E3 /* ConnectionDefaults.swift */,
 				727099401E66F90D00BE40E3 /* Transaction.swift */,
 				7206F7AF1E6694FE00131CB0 /* Core */,
 				727099611E69B04F00BE40E3 /* Internal */,
@@ -564,6 +567,7 @@
 				7206F7B91E66989600131CB0 /* Database.swift in Sources */,
 				7270994E1E68406400BE40E3 /* Utility.swift in Sources */,
 				7206F7C61E669CDD00131CB0 /* Connection.swift in Sources */,
+				727099661E6AA43300BE40E3 /* ConnectionDefaults.swift in Sources */,
 				727099581E69977300BE40E3 /* SQL.swift in Sources */,
 				7270995A1E699A9400BE40E3 /* Constant.swift in Sources */,
 				727099451E68392E00BE40E3 /* CollectionKey.swift in Sources */,
