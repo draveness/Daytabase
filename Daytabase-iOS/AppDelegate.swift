@@ -43,6 +43,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let value = transaction.value(forKey: "draven")
             print("\(value)")
         }
+
+        connection.asyncRead { (transaction) in
+
+        }
         return true
     }
 

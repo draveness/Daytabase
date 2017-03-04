@@ -73,6 +73,7 @@ public class ReadTransaction {
         return false
     }
 
+
     func begin() {
         guard let statement = connection.database.beginTransactionStatement else { return }
         let status = sqlite3_step(statement)
