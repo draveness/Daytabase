@@ -40,7 +40,7 @@ public final class Connection {
 
     var longLivedReadTransaction: ReadTransaction?
 
-    var lock: os_unfair_lock = OS_UNFAIR_LOCK_INIT
+    var lock: os_unfair_lock = os_unfair_lock()
     var writeQueueSuspended: Bool = false
     var activeReadWriteTransaction: Bool = false
 
