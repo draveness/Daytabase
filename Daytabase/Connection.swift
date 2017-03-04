@@ -51,6 +51,8 @@ public final class Connection {
     func initiailzeObjectCache() {
     }
 
+    // MARK: - Transactions
+
     public func read(block: (ReadTransaction) -> Void) {
         connectionQueue.sync {
             if let transaction = longLivedReadTransaction {
@@ -81,12 +83,12 @@ public final class Connection {
     }
 
     public func asyncRead(block: @escaping (ReadTransaction) -> Void) {
-        asyncRead(block: block, completionBlock: nil)
+        asyncRead(block: block, completion: nil)
     }
 
     public func asyncRead(block: @escaping (ReadTransaction) -> Void,
                           completionQueue: DispatchQueue = DispatchQueue.main,
-                          completionBlock: ((Void) -> Void)? = nil) {
+                          completion: ((Void) -> Void)? = nil) {
         connectionQueue.async {
             if let transaction = self.longLivedReadTransaction {
                 block(transaction)
@@ -97,15 +99,19 @@ public final class Connection {
                 self.postRead(transaction: transaction)
             }
 
-            if let completionBlock = completionBlock {
-                completionQueue.async(execute: completionBlock)
+            if let completion = completion {
+                completionQueue.async(execute: completion)
             }
         }
     }
 
+    public func asyncReadWrite(block: @escaping (ReadWriteTransaction) -> Void) {
+        asyncReadWrite(block: block, completion: nil)
+    }
+
     public func asyncReadWrite(block: @escaping (ReadWriteTransaction) -> Void,
                                completionQueue: DispatchQueue = DispatchQueue.main,
-                               completionBlock: ((Void) -> Void)? = nil){
+                               completion: ((Void) -> Void)? = nil) {
         connectionQueue.async {
             if let _ = self.longLivedReadTransaction {
                 Daytabase.log.warning("Implicitly ending long-lived read transaction on connection \(self), database \(self.database)")
@@ -117,11 +123,18 @@ public final class Connection {
                 self.postReadWrite(transaction: transaction)
             }
 
-            if let completionBlock = completionBlock {
-                completionQueue.async(execute: completionBlock)
+            if let completion = completion {
+                completionQueue.async(execute: completion)
             }
         }
     }
+
+    public func flushTransaction(completionQueue: DispatchQueue = DispatchQueue.main,
+                                 completion: @escaping (Void) -> Void) {
+        connectionQueue.async(execute: completion)
+    }
+
+    // MARK: - Transaction States
 
     func newReadTransaction() -> ReadTransaction {
         return ReadTransaction(connection: self)
@@ -145,6 +158,28 @@ public final class Connection {
 
     func postReadWrite(transaction: ReadWriteTransaction) {
         transaction.commit()
+    }
+
+    // MARK: - Long Lived Transaction
+
+    func endLongLivedTransaction() -> [Notification] {
+        return []
+    }
+
+    func preWriteQueue() {
+        OSSpinLockLock(&self.lock)
+        if writeQueueSuspended {
+            self.database.writeQueue.resume()
+            writeQueueSuspended = false
+        }
+        activeReadWriteTransaction = true
+        OSSpinLockUnlock(&self.lock)
+    }
+
+    func postWriteQueue() {
+        OSSpinLockLock(&self.lock)
+        activeReadWriteTransaction = false
+        OSSpinLockUnlock(&self.lock)
     }
 }
 
