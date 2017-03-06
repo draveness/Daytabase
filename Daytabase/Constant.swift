@@ -22,7 +22,7 @@ let defaultSerializer: DatabaseSerializer = { (collection: String, key: String, 
 }
 
 let defaultDeserializer: DatabaseDeserializer = { (collection: String, key: String, data: Data) in
-    return NSKeyedUnarchiver.unarchiveObject(with: data)
+    return data.count > 0 ? NSKeyedUnarchiver.unarchiveObject(with: data) : nil
 }
 
 func daytabase_errmsg(_ db: OpaquePointer?) -> String {
