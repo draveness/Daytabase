@@ -9,7 +9,7 @@
 import Foundation
 import CSQLite3
 
-enum DatabasePolicy: Int {
+public enum DatabasePolicy: Int {
     case containment
     case share
     case copy

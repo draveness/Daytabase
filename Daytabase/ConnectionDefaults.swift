@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ConnectionDefaults {
+public struct ConnectionDefaults {
     private static let DefaultObjectCacheLimit   = 250
     private static let DefaultMetadataCacheLimit = 250
 
