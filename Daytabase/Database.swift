@@ -298,11 +298,6 @@ public final class Database {
             Daytabase.log.verbose("Removed connection from <\(self): databaseName=\((self.databasePath as NSString).lastPathComponent), connectionCount=\(self.connectionStates.count)>")
         }
 
-        // We prefer to invoke this method synchronously.
-        //
-        // The connection may be the last object retaining the database.
-        // It's easier to trace object deallocations when they happen in a predictable order.
-
         if snapshotQueue.getSpecific(key: isOnSnapshotQueueKey)! {
             block()
         } else {

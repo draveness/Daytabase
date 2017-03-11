@@ -24,7 +24,6 @@ public final class Connection: NSObject {
 
     let objectCache: Cache = Cache(capacity: 100)
 
-
     init(database: Database) {
         self.database = database
 
