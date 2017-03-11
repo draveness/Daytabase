@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 class CacheItem: NSObject {
     var key: CollectionKey
     var value: Any {
@@ -30,15 +29,29 @@ class CacheItem: NSObject {
     }
 }
 
+fileprivate let CacheDefaultCountLimit = 40
+
 public class Cache {
-    public let capacity: Int
+    public var capacity: Int {
+        didSet {
+            if capacity != 0 {
+                while dictionary.count > capacity {
+                    let keyToEvict = leastRecentCacheItem?.key
+                    
+                    if <#condition#> {
+                        <#code#>
+                    }
+                }
+            }
+        }
+    }
 
     private var dictionary: [CollectionKey: CacheItem] = [:]
     private var mostRecentCacheItem: CacheItem?
     private var leastRecentCacheItem: CacheItem?
     private var evictedCacheItem: CacheItem?
-
-    public init(capacity: Int = 0) {
+    
+    public init(capacity: Int = CacheDefaultCountLimit) {
         self.capacity = capacity
     }
 

@@ -31,7 +31,16 @@ public final class Database {
     var snapshot: Int64 = 0
 
     var connectionStates: [ConnectionState] = []
-    let connectionDefaults: ConnectionDefaults = ConnectionDefaults()
+    private var _connectionDefaults: ConnectionDefaults = ConnectionDefaults()
+    public var connectionDefaults: ConnectionDefaults {
+        get {
+            var defaults: ConnectionDefaults!
+            internalQueue.sync {
+                defaults = self._connectionDefaults
+            }
+            return defaults
+        }
+    }
 
     static let DEFAULT_MAX_CONNECTION_POOL_COUNT = 5    // connections
     static let DEFAULT_CONNECTION_POOL_LIFETIME =  90.0 // seconds
@@ -271,7 +280,99 @@ public final class Database {
         
         sqlite3_finalize(statement)
     }
+    
+    // MARK: - Defaults
+    
+    public var defaultObjectCacheEnabled: Bool {
+        get {
+            var result: Bool = false
+            internalQueue.sync {
+                result = self._connectionDefaults.objectCacheEnabled
+            }
+            return result
+        }
+        set {
+            internalQueue.sync {
+                self._connectionDefaults.objectCacheEnabled = newValue
+            }
+        }
+    }
 
+    public var defaultObjectCacheLimit: Int {
+        get {
+            var result: Int = 0
+            internalQueue.sync {
+                result = self._connectionDefaults.objectCacheLimit
+            }
+            return result
+        }
+        set {
+            internalQueue.sync {
+                self._connectionDefaults.objectCacheLimit = newValue
+            }
+        }
+    }
+    
+    public var defaultMetadataCacheEnabled: Bool {
+        get {
+            var result = false
+            internalQueue.sync {
+                result = self._connectionDefaults.metadataCacheEnabled
+            }
+            return result
+        }
+        set {
+            internalQueue.sync {
+                self._connectionDefaults.metadataCacheEnabled = newValue
+            }
+        }
+    }
+    
+    public var defaultMetadataCacheLimit: Int {
+        get {
+            var result = 0
+            internalQueue.sync {
+                result = self._connectionDefaults.metadataCacheLimit
+            }
+            return result
+        }
+        set {
+            internalQueue.sync {
+                self._connectionDefaults.metadataCacheLimit = newValue
+            }
+        }
+    }
+    
+    public var defaultObjectPolicy: DatabasePolicy {
+        get {
+            var result: DatabasePolicy = .share
+            internalQueue.sync {
+                result = self._connectionDefaults.objectPolicy
+            }
+            return result
+        }
+        set {
+            internalQueue.sync {
+                self._connectionDefaults.objectPolicy = newValue
+            }
+        }
+    }
+    
+    public var defaultMetadataPolicy: DatabasePolicy {
+        get {
+            var result: DatabasePolicy = .share
+            internalQueue.sync {
+                result = self._connectionDefaults.metadataPolicy
+            }
+            return result
+        }
+        set {
+            internalQueue.sync {
+                self._connectionDefaults.metadataPolicy = newValue
+            }
+        }
+    }
+    
     // MARK: - Connections
 
     private func add(connection: Connection) {
