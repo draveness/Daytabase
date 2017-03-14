@@ -36,17 +36,26 @@ public class Cache {
         didSet {
             if capacity != 0 {
                 while dictionary.count > capacity {
-                    let keyToEvict = leastRecentCacheItem?.key
-                    
-                    if <#condition#> {
-                        <#code#>
+                    if let _ = evictedCacheItem {
+                        leastRecentCacheItem = leastRecentCacheItem?.prev
+                        leastRecentCacheItem?.next = nil
+                    } else {
+                        evictedCacheItem = leastRecentCacheItem
+                        leastRecentCacheItem = leastRecentCacheItem?.prev
+                        leastRecentCacheItem?.next = nil
+                        
+                        evictedCacheItem?.prev = nil
+                        evictedCacheItem?.next = nil
+                    }
+                    if let keyToEvict = leastRecentCacheItem?.key {
+                        self.dictionary.removeValue(forKey: keyToEvict)
                     }
                 }
             }
         }
     }
 
-    private var dictionary: [CollectionKey: CacheItem] = [:]
+    fileprivate var dictionary: [CollectionKey: CacheItem] = [:]
     private var mostRecentCacheItem: CacheItem?
     private var leastRecentCacheItem: CacheItem?
     private var evictedCacheItem: CacheItem?
@@ -178,7 +187,7 @@ public class Cache {
         }
     }
 
-    public func removeObject(forKey key: CollectionKey) {
+    public func remove(forKey key: CollectionKey) {
         if let item = dictionary[key] {
             if mostRecentCacheItem == item {
                 mostRecentCacheItem = item.next
@@ -195,16 +204,33 @@ public class Cache {
         }
     }
 
-    public func removeObjects(forKeys keys: [CollectionKey]) {
+    public func remove(forKeys keys: [CollectionKey]) {
         for key in keys {
-            removeObject(forKey: key)
+            remove(forKey: key)
         }
     }
 
-    public func removeAllObjects() {
+    public func removeAll() {
         mostRecentCacheItem = nil
         leastRecentCacheItem = nil
         evictedCacheItem = nil
         dictionary.removeAll()
+    }
+}
+
+extension Cache: Sequence {
+    public typealias Iterator = AnyIterator<(CollectionKey, Any)>
+    
+    public func makeIterator() -> AnyIterator<(CollectionKey, Any)> {
+        var iterationsCount = 0
+        let keys = Array(self.dictionary.keys)
+
+        return AnyIterator {
+            guard iterationsCount < self.dictionary.count else { return nil }
+            let key = keys[iterationsCount]
+            let value = self.dictionary[key]!
+            iterationsCount += 1
+            return (key, value)
+        }
     }
 }

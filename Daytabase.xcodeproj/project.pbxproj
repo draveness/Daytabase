@@ -13,7 +13,6 @@
 		7206F79C1E6694E100131CB0 /* Daytabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7206F7921E6694E100131CB0 /* Daytabase.framework */; };
 		7206F7A31E6694E100131CB0 /* Daytabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 7206F7951E6694E100131CB0 /* Daytabase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7206F7AE1E6694ED00131CB0 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7206F7AD1E6694ED00131CB0 /* libsqlite3.tbd */; };
-		7206F7B11E6695BB00131CB0 /* SQLite-Bridging.h in Headers */ = {isa = PBXBuildFile; fileRef = 7206F7B01E66951D00131CB0 /* SQLite-Bridging.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7206F7B71E66988B00131CB0 /* DaytabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7206F7A01E6694E100131CB0 /* DaytabaseTests.swift */; };
 		7206F7B91E66989600131CB0 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7206F7B81E66989600131CB0 /* Database.swift */; };
 		7206F7C61E669CDD00131CB0 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7206F7C51E669CDD00131CB0 /* Connection.swift */; };
@@ -83,7 +82,6 @@
 		7206F7A01E6694E100131CB0 /* DaytabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaytabaseTests.swift; sourceTree = "<group>"; };
 		7206F7A21E6694E100131CB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7206F7AD1E6694ED00131CB0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		7206F7B01E66951D00131CB0 /* SQLite-Bridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SQLite-Bridging.h"; sourceTree = "<group>"; };
 		7206F7B81E66989600131CB0 /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		7206F7C31E669C9500131CB0 /* module.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; name = module.map; path = Modules/iphoneos/module.map; sourceTree = "<group>"; };
 		7206F7C41E669CA600131CB0 /* module.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; name = module.map; path = Modules/iphonesimulator/module.map; sourceTree = "<group>"; };
@@ -175,7 +173,6 @@
 				7206F7C51E669CDD00131CB0 /* Connection.swift */,
 				727099651E6AA43300BE40E3 /* ConnectionDefaults.swift */,
 				727099401E66F90D00BE40E3 /* Transaction.swift */,
-				7206F7AF1E6694FE00131CB0 /* Core */,
 				727099611E69B04F00BE40E3 /* Internal */,
 				7270994A1E683F9700BE40E3 /* Utilities */,
 				7206F7961E6694E100131CB0 /* Info.plist */,
@@ -202,14 +199,6 @@
 				9FE7B93E6E8659FF2614BA0F /* Pods_DaytabaseTests.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		7206F7AF1E6694FE00131CB0 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				7206F7B01E66951D00131CB0 /* SQLite-Bridging.h */,
-			);
-			name = Core;
 			sourceTree = "<group>";
 		};
 		7206F7B21E66964200131CB0 /* Modules */ = {
@@ -291,7 +280,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7270995E1E699D9500BE40E3 /* sqlite3.h in Headers */,
-				7206F7B11E6695BB00131CB0 /* SQLite-Bridging.h in Headers */,
 				7270994D1E68401100BE40E3 /* Murmurhash.h in Headers */,
 				7206F7A31E6694E100131CB0 /* Daytabase.h in Headers */,
 			);
